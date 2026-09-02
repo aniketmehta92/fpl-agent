@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPL Agent — Dashboard</title>
+<style>
+  :root{
+    --fpl-purple:#37003C; --fpl-cyan:#00FF87; --pitch-a:#00A24A; --pitch-b:#029A46;
+    --card:#ffffff; --ink:#1c0d21; --muted:#6b5f70; --line:#e6e0e8;
+    --fdr1:#375523; --fdr2:#01FC7A; --fdr3:#E7E7E7; --fdr4:#FF1751; --fdr5:#80072D;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif; color:var(--ink); background:#f6f4f7;}
+  main{max-width:1080px; margin:0 auto; padding:0 16px 48px}
+  a{color:inherit}
+
+  /* Header strip */
+  header{background:var(--fpl-purple); color:#fff}
+  .head-inner{max-width:1080px; margin:0 auto; padding:14px 16px; display:flex; flex-wrap:wrap; gap:10px 28px; align-items:baseline}
+  .gw{font-size:1.5rem; font-weight:700}
+  .gw b{color:var(--fpl-cyan)}
+  .deadline{font-size:.95rem}
+  #countdown{font-variant-numeric:tabular-nums; font-weight:700; color:var(--fpl-cyan)}
+  .facts{display:flex; gap:22px; margin-left:auto; font-size:.95rem}
+  .facts .v{font-weight:700; font-size:1.1rem; display:block}
+  #sample-banner{display:none; background:#ffdd57; color:#4a3b00; text-align:center; padding:6px 10px; font-weight:600; font-size:.9rem}
+
+  section{margin-top:30px}
+  h2{font-size:1.05rem; font-weight:700; color:var(--fpl-purple); padding-bottom:8px; border-bottom:2px solid var(--fpl-purple); margin-bottom:14px}
+
+  /* Pitch */
+  .pitch{background:repeating-linear-gradient(0deg, var(--pitch-a) 0 64px, var(--pitch-b) 64px 128px);
+         border-radius:10px; padding:22px 10px 14px; box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
+  .row{display:flex; justify-content:center; gap:12px; margin-bottom:16px; flex-wrap:wrap}
+  .pcard{background:var(--card); width:112px; border-radius:6px; overflow:hidden; text-align:center;
+         box-shadow:0 1px 3px rgba(0,0,0,.35); position:relative}
+  .pcard .club{background:var(--fpl-purple); color:#fff; font-weight:700; font-size:.72rem; padding:3px 0; letter-spacing:.04em}
+  .pcard .name{font-weight:700; font-size:.82rem; padding:5px 4px 1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .pcard .fx{font-size:.74rem; color:var(--muted); padding-bottom:3px}
+  .pcard .pr{background:#efeaf1; font-size:.76rem; font-weight:600; padding:2px 0}
+  .badge{position:absolute; top:26px; right:4px; background:var(--fpl-purple); color:var(--fpl-cyan);
+         border-radius:50%; width:20px; height:20px; font-size:.7rem; font-weight:800; line-height:20px}
+  .bench{background:#0b4d2b; border-radius:0 0 10px 10px; margin-top:-6px; padding:12px 10px 10px}
+  .bench .row{margin-bottom:0}
+  .bench-label{color:#bfe8cf; font-size:.75rem; font-weight:600; text-align:center; margin-bottom:6px}
+
+  /* Tables */
+  table{width:100%; border-collapse:collapse; background:var(--card); border-radius:8px; overflow:hidden;
+        box-shadow:0 1px 2px rgba(0,0,0,.08); font-size:.88rem}
+  th,td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child, th:nth-child(2),td:nth-child(2), th:nth-child(3),td:nth-child(3){text-align:left}
+  thead th{background:var(--fpl-purple); color:#fff; font-weight:600; font-size:.8rem}
+  tbody tr:last-child td{border-bottom:none}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* FDR grid */
+  #fdr-table td.fdr{text-align:center; font-weight:600; font-size:.78rem; min-width:64px}
+  .d1{background:var(--fdr1); color:#fff} .d2{background:var(--fdr2); color:#123}
+  .d3{background:var(--fdr3); color:#333} .d4{background:var(--fdr4); color:#fff} .d5{background:var(--fdr5); color:#fff}
+  #fdr-sort{cursor:pointer; text-decoration:underline}
+  #fdr-sort:focus-visible, .pcard:focus-visible{outline:3px solid var(--fpl-cyan); outline-offset:2px}
+
+  .stamp{margin-top:26px; font-size:.78rem; color:var(--muted); text-align:center}
+  @media (max-width:640px){ .facts{margin-left:0} .pcard{width:96px} }
+</style>
+</head>
+<body>
+<div id="sample-banner">SAMPLE LAYOUT — placeholder data. Run plan mode to populate.</div>
+<header>
+  <div class="head-inner">
+    <div class="gw">Gameweek <b id="gw">—</b></div>
+    <div class="deadline">Deadline: <span id="deadline">—</span> · <span id="countdown">—</span></div>
+    <div class="facts">
+      <div><span class="v num" id="bank">—</span>Bank</div>
+      <div><span class="v num" id="fts">—</span>Free transfers</div>
+      <div><span class="v" id="chips">—</span>Chips left</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="squad-section">
+    <h2>Squad</h2>
+    <div class="pitch">
+      <div class="row" id="row-GK"></div>
+      <div class="row" id="row-DEF"></div>
+      <div class="row" id="row-MID"></div>
+      <div class="row" id="row-FWD"></div>
+    </div>
+    <div class="bench">
+      <div class="bench-label">Bench (in order)</div>
+      <div class="row" id="row-BENCH"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Watchlist — transfer-in pipeline</h2>
+    <table id="watch-table">
+      <thead><tr>
+        <th>Player</th><th>Club</th><th>Pos</th><th>£</th><th>xG (L4)</th><th>xA (L4)</th>
+        <th>xGI/90</th><th>Start %</th><th>FDR next 3</th><th>E[pts] next 3</th><th>Δ to promote</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Fixture difficulty — next 6 (FPL FDR) · <span id="fdr-sort" role="button" tabindex="0">sort by avg</span></h2>
+    <table id="fdr-table"><thead></thead><tbody></tbody></table>
+  </section>
+
+  <p class="stamp">Generated <span id="stamp">—</span> by fpl-analyst · read-only view of coverage/ state</p>
+</main>
+
+<script id="fpl-data" type="application/json">
+{"sample":false,"generated":"2026-08-31, 5:40 PM PT","gw":3,"deadline_iso":"2026-09-04T17:30:00Z","deadline_local":"Fri 4 Sep, 10:30 AM PT",
+"bank":0.5,"fts":1,"chips":["BB","TC","FH"],
+"squad":{"xi":[
+ {"name":"Kinsky","club":"TOT","pos":"GK","fixture":"NFO (A)","price":4.5,"cap":false,"vice":false},
+ {"name":"Gvardiol","club":"MCI","pos":"DEF","fixture":"COV (H)","price":5.5,"cap":false,"vice":false},
+ {"name":"Calafiori","club":"ARS","pos":"DEF","fixture":"CHE (H)","price":5.5,"cap":false,"vice":false},
+ {"name":"Shaw","club":"MUN","pos":"DEF","fixture":"EVE (A)","price":4.5,"cap":false,"vice":false},
+ {"name":"B.Fernandes","club":"MUN","pos":"MID","fixture":"EVE (A)","price":12.0,"cap":false,"vice":true},
+ {"name":"Mbeumo","club":"MUN","pos":"MID","fixture":"EVE (A)","price":8.0,"cap":false,"vice":false},
+ {"name":"Semenyo","club":"MCI","pos":"MID","fixture":"COV (H)","price":8.5,"cap":false,"vice":false},
+ {"name":"Groß","club":"BHA","pos":"MID","fixture":"LEE (H)","price":5.5,"cap":false,"vice":false},
+ {"name":"Haaland","club":"MCI","pos":"FWD","fixture":"COV (H)","price":15.5,"cap":true,"vice":false},
+ {"name":"João Pedro","club":"CHE","pos":"FWD","fixture":"ARS (A)","price":7.5,"cap":false,"vice":false},
+ {"name":"Calvert-Lewin","club":"LEE","pos":"FWD","fixture":"BHA (A)","price":6.0,"cap":false,"vice":false}],
+"bench":[
+ {"name":"A.Palmer","club":"IPS","pos":"GK","fixture":"LIV (H)","price":4.0},
+ {"name":"Diop","club":"IPS","pos":"DEF","fixture":"LIV (H)","price":4.0},
+ {"name":"van Ewijk","club":"COV","pos":"DEF","fixture":"MCI (A)","price":4.0},
+ {"name":"Hughes","club":"CRY","pos":"MID","fixture":"FUL (A)","price":4.5}]},
+"watchlist":[
+ {"name":"Saka","club":"ARS","pos":"MID","price":9.5,"xg4":1.27,"xa4":0.12,"xgi90":0.80,"start_pct":100,"fdr3":3.3,"e3":21.8,"delta":9.5},
+ {"name":"Cherki","club":"MCI","pos":"MID","price":7.7,"xg4":0.35,"xa4":1.05,"xgi90":1.17,"start_pct":50,"fdr3":2.7,"e3":20.9,"delta":8.6},
+ {"name":"C.Palmer","club":"CHE","pos":"MID","price":9.6,"xg4":0.94,"xa4":0.32,"xgi90":0.66,"start_pct":100,"fdr3":3.3,"e3":20.9,"delta":8.6},
+ {"name":"Isak","club":"LIV","pos":"FWD","price":9.0,"xg4":2.08,"xa4":0.01,"xgi90":1.05,"start_pct":100,"fdr3":2.3,"e3":18.7,"delta":3.9},
+ {"name":"N.Williams","club":"NFO","pos":"DEF","price":5.0,"xg4":0.12,"xa4":0.17,"xgi90":0.15,"start_pct":100,"fdr3":3.0,"e3":11.2,"delta":1.9},
+ {"name":"O'Reilly","club":"MCI","pos":"DEF","price":6.5,"xg4":0.09,"xa4":0.43,"xgi90":0.31,"start_pct":100,"fdr3":2.7,"e3":9.4,"delta":0.1},
+ {"name":"R.James","club":"CHE","pos":"DEF","price":5.5,"xg4":0.10,"xa4":0.07,"xgi90":0.14,"start_pct":50,"fdr3":3.3,"e3":4.2,"delta":-5.1},
+ {"name":"Havertz","club":"ARS","pos":"FWD","price":7.5,"xg4":0.28,"xa4":0.06,"xgi90":0.17,"start_pct":100,"fdr3":3.3,"e3":8.4,"delta":-6.4}],
+"fdr":{"gws":["GW3","GW4","GW5","GW6","GW7","GW8"],"teams":[
+ {"name":"Arsenal","cells":[{"opp":"CHE","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3}],"avg":3.0},
+ {"name":"Aston Villa","cells":[{"opp":"HUL","ha":"A","d":2},{"opp":"NFO","ha":"H","d":3},{"opp":"TOT","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"NEW","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4}],"avg":3.0},
+ {"name":"Bournemouth","cells":[{"opp":"NEW","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"LIV","ha":"H","d":4},{"opp":"CHE","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4}],"avg":3.3},
+ {"name":"Brentford","cells":[{"opp":"SUN","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"CHE","ha":"H","d":4},{"opp":"AVL","ha":"A","d":4},{"opp":"LIV","ha":"H","d":4},{"opp":"HUL","ha":"A","d":2}],"avg":3.2},
+ {"name":"Brighton","cells":[{"opp":"LEE","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"ARS","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4}],"avg":3.0},
+ {"name":"Chelsea","cells":[{"opp":"ARS","ha":"A","d":5},{"opp":"HUL","ha":"H","d":2},{"opp":"BRE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3}],"avg":3.2},
+ {"name":"Coventry City","cells":[{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"TOT","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2}],"avg":2.8},
+ {"name":"Crystal Palace","cells":[{"opp":"FUL","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"LEE","ha":"A","d":3},{"opp":"NFO","ha":"H","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2}],"avg":2.7},
+ {"name":"Everton","cells":[{"opp":"MUN","ha":"H","d":4},{"opp":"TOT","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"HUL","ha":"A","d":2},{"opp":"CHE","ha":"H","d":4},{"opp":"ARS","ha":"A","d":5}],"avg":3.3},
+ {"name":"Fulham","cells":[{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4},{"opp":"MUN","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2}],"avg":2.8},
+ {"name":"Hull City","cells":[{"opp":"AVL","ha":"H","d":3},{"opp":"CHE","ha":"A","d":4},{"opp":"NEW","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"FUL","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3}],"avg":3.2},
+ {"name":"Ipswich Town","cells":[{"opp":"LIV","ha":"H","d":4},{"opp":"CRY","ha":"A","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2},{"opp":"MCI","ha":"A","d":5},{"opp":"NFO","ha":"H","d":3}],"avg":3.3},
+ {"name":"Leeds","cells":[{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"CRY","ha":"H","d":3},{"opp":"ARS","ha":"A","d":5},{"opp":"MUN","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3}],"avg":3.3},
+ {"name":"Liverpool","cells":[{"opp":"IPS","ha":"A","d":2},{"opp":"FUL","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"BRE","ha":"A","d":3},{"opp":"BHA","ha":"H","d":2}],"avg":2.7},
+ {"name":"Man City","cells":[{"opp":"COV","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"LIV","ha":"A","d":4},{"opp":"IPS","ha":"H","d":2},{"opp":"AVL","ha":"A","d":4}],"avg":3.0},
+ {"name":"Man Utd","cells":[{"opp":"EVE","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"FUL","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3}],"avg":3.2},
+ {"name":"Newcastle","cells":[{"opp":"BOU","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"AVL","ha":"H","d":3},{"opp":"CRY","ha":"A","d":3}],"avg":2.7},
+ {"name":"Nott'm Forest","cells":[{"opp":"TOT","ha":"H","d":3},{"opp":"AVL","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CRY","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2}],"avg":3.0},
+ {"name":"Spurs","cells":[{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"AVL","ha":"H","d":3},{"opp":"MUN","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CHE","ha":"A","d":4}],"avg":3.2},
+ {"name":"Sunderland","cells":[{"opp":"BRE","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2}],"avg":3.2}]}}
+</script>
+
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById('fpl-data').textContent);
+  const $ = id => document.getElementById(id);
+  if (D.sample) $('sample-banner').style.display = 'block';
+
+  // Header
+  $('gw').textContent = D.gw;
+  $('deadline').textContent = D.deadline_local;
+  $('bank').textContent = '£' + Number(D.bank).toFixed(1) + 'm';
+  $('fts').textContent = D.fts;
+  $('chips').textContent = (D.chips && D.chips.length) ? D.chips.join(' · ') : 'none';
+  $('stamp').textContent = D.generated;
+
+  const dl = new Date(D.deadline_iso);
+  function tick(){
+    const ms = dl - Date.now();
+    if (isNaN(ms)) { $('countdown').textContent = ''; return; }
+    if (ms <= 0) { $('countdown').textContent = 'Deadline passed'; return; }
+    const h = Math.floor(ms/3.6e6), m = Math.floor(ms%3.6e6/6e4);
+    $('countdown').textContent = h + 'h ' + String(m).padStart(2,'0') + 'm to deadline';
+  }
+  tick(); setInterval(tick, 30000);
+
+  // Pitch
+  function card(p, showBadge){
+    const el = document.createElement('div');
+    el.className = 'pcard'; el.tabIndex = 0;
+    el.innerHTML =
+      '<div class="club">' + p.club + '</div>' +
+      '<div class="name">' + p.name + '</div>' +
+      '<div class="fx">' + p.fixture + '</div>' +
+      '<div class="pr num">£' + Number(p.price).toFixed(1) + '</div>';
+    if (showBadge && (p.cap || p.vice)) {
+      const b = document.createElement('div');
+      b.className = 'badge'; b.textContent = p.cap ? 'C' : 'V';
+      el.appendChild(b);
+    }
+    return el;
+  }
+  ['GK','DEF','MID','FWD'].forEach(pos =>
+    D.squad.xi.filter(p => p.pos === pos).forEach(p => $('row-' + pos).appendChild(card(p, true))));
+  D.squad.bench.forEach(p => $('row-BENCH').appendChild(card(p, false)));
+
+  // Watchlist (sorted: closest to promotion first)
+  const wt = document.querySelector('#watch-table tbody');
+  D.watchlist.slice().sort((a,b) => b.delta - a.delta).forEach(w => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + w.name + '</td><td>' + w.club + '</td><td>' + w.pos + '</td>' +
+      '<td class="num">£' + Number(w.price).toFixed(1) + '</td>' +
+      '<td class="num">' + w.xg4.toFixed(2) + '</td><td class="num">' + w.xa4.toFixed(2) + '</td>' +
+      '<td class="num">' + w.xgi90.toFixed(2) + '</td><td class="num">' + w.start_pct + '%</td>' +
+      '<td class="num">' + w.fdr3.toFixed(1) + '</td><td class="num">' + w.e3.toFixed(1) + '</td>' +
+      '<td class="num">' + (w.delta >= 0 ? '+' : '') + w.delta.toFixed(1) + '</td>';
+    wt.appendChild(tr);
+  });
+
+  // FDR grid
+  const fh = document.querySelector('#fdr-table thead');
+  fh.innerHTML = '<tr><th>Team</th>' + D.fdr.gws.map(g => '<th style="text-align:center">' + g + '</th>').join('') + '<th>Avg</th></tr>';
+  let asc = true;
+  function renderFDR(rows){
+    const fb = document.querySelector('#fdr-table tbody');
+    fb.innerHTML = '';
+    rows.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + t.name + '</td>' +
+        t.cells.map(c => '<td class="fdr d' + c.d + '">' + c.opp + ' (' + c.ha + ')</td>').join('') +
+        '<td class="num">' + t.avg.toFixed(1) + '</td>';
+      fb.appendChild(tr);
+    });
+  }
+  renderFDR(D.fdr.teams);
+  function sortFDR(){
+    asc = !asc;
+    renderFDR(D.fdr.teams.slice().sort((a,b) => asc ? a.avg - b.avg : b.avg - a.avg));
+  }
+  $('fdr-sort').addEventListener('click', sortFDR);
+  $('fdr-sort').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sortFDR(); } });
+})();
+</script>
+</body>
+</html>

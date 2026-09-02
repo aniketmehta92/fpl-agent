@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "fantasy-pl": {
+      "command": "C:\\Users\\anike\\Claude\\FPL\\fplenv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "fpl_mcp"
+      ]
+    }
+  }
+}
