@@ -155,23 +155,44 @@ Regenerate at the end of EVERY run mode, and on request ("refresh the
 dashboard"). Mechanism: read
 `.claude/skills/fpl-analyst/assets/dashboard_template.html`, replace ONLY
 the JSON inside `<script id="fpl-data" type="application/json">` with
-fresh data, write the result to `coverage/dashboard.html`. Never modify
-markup, CSS, or JS outside that block — the layout is fixed by design.
+fresh data, write the result to `coverage/dashboard.html`. During a run,
+never modify markup, CSS, or JS outside that block. Layout changes happen
+only when the user explicitly asks for a template change, and then they go
+into the **template** (never into `coverage/dashboard.html`, which is
+overwritten every run), with this data contract updated in the same edit.
 
-Data contract (all fields required):
+Data contract (all fields required) — **v2, 2026-09-03**:
 - `sample:false`, `generated:"<timestamp PT>"`, `gw`, `deadline_iso` (UTC),
   `deadline_local` (PT string), `bank`, `fts`, `chips:[remaining]`
 - `squad.xi`: 11 of `{name, club, pos: GK|DEF|MID|FWD, fixture "OPP (H|A)",
-  price, cap, vice}`; `squad.bench`: 4 in bench order (GK first)
+  fdr, xg3, xa3, price, cap, vice}`; `squad.bench`: 4 in bench order (GK
+  first) with the same fields minus `cap`/`vice`.
+  - `fdr` = FPL's native 1–5 difficulty of THIS GW's fixture (int).
+  - `xg3` / `xa3` = projected xG / xA over the NEXT 3 fixtures:
+    `(season xG or xA ÷ games played) × Σ over the 3 fixtures of
+    (1 + 0.15 × (3 − FDR_i))` — the same fixture multiplier the projection
+    model uses. 0.00 for players with no minutes. Two decimals.
+  - `price` = current price (what FPL shows), not buy price.
 - `watchlist[]`: `{name, club, pos, price, xg4, xa4, xgi90, start_pct,
   fdr3, e3, delta}` where `delta` = E[Δpts next 3] − 2.0 vs. weakest
   same-position starter (the promotion distance)
 - `fdr.gws`: next-6 GW labels; `fdr.teams[]` (all 20):
   `{name, cells:[{opp, ha, d}], avg}` with `d` = FPL's native 1–5 FDR
 
-The squad section mirrors FPL exactly — no analytics overlays on player
-cards (deliberate; the agent's numbers live in the watchlist section and
-the briefs). After writing, remind: refresh the browser tab (F5).
+What the template does with it (so the agent does not duplicate it):
+- Each player card shows a coloured FDR chip for this GW and the `xg3` /
+  `xa3` projection under the fixture.
+- The header's top-right block shows the XI's average `fdr` and combined
+  `xg3 + xa3`, computed client-side from whatever XI is on the pitch.
+- The squad section is a **client-side what-if sandbox**: drag or tap to
+  swap XI ↔ bench (formation-validated) or reorder the bench; header XI
+  stats recompute live; a "SANDBOX ONLY — NOT SAVED" tag and a reset button
+  are always visible. **Nothing persists** — the agent never reads squad
+  state back from the page. The only squad truth is `coverage/squad.md`.
+- No watchlist entry from the page (a static file cannot write back); the
+  user adds names via chat.
+
+After writing, remind: refresh the browser tab (F5).
 
 ### Publish step (end of EVERY run, after the dashboard is written)
 

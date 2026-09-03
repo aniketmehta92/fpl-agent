@@ -11,6 +11,7 @@
 param(
     [string]$Source = 'C:\Users\anike\Claude\FPL\coverage\dashboard.html',
     [string]$RepoDir = 'C:\Users\anike\Claude\fpl-dashboard',
+    [string]$Message = '',
     [switch]$NoPush
 )
 
@@ -60,7 +61,8 @@ try {
     }
 
     $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm'
-    git commit -m "Update dashboard - $stamp" | Out-Null
+    if (-not $Message) { $Message = "Update dashboard - $stamp" }
+    git commit -m $Message | Out-Null
     Write-Output "Committed: $($staged -join ', ')"
 
     if ($NoPush) {

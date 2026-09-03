@@ -5,7 +5,11 @@
 **Manager:** Aniket Mehta · Team "qqq" · ID 3265587 · Region USA · Season 1
 **Overall:** 152 pts · OR 650,787 · GW2 103 pts (GW2 rank 244,328) · 0 transfers made all season
 
-Bank: £0.5m | Free transfers: 1 | Team value: £99.8m (squad) / £100.3m (incl. bank)
+Bank: £0.5m | Free transfers: 1 | Team value: £99.9m (squad, at current prices) / £100.4m (incl. bank) · sell value £99.6m
+
+> Price check 2026-09-03 (GW2 complete, GW3 deadline Fri 4 Sep 17:30 UTC): João Pedro
+> now £7.7m (sell £7.6m — first £0.1m of profit banked); Gvardiol and Calafiori £5.6m
+> (sell still £5.5m). Everyone else unchanged.
 Chips remaining: WC1 [PLAYED] WC2 [ — not yet released ] BB [available] TC [available] FH [available]
 
 > ⚠️ Wildcard already spent (GW1/2 — before this log existed; 0 transfers recorded,
@@ -29,12 +33,12 @@ Chips remaining: WC1 [PLAYED] WC2 [ — not yet released ] BB [available] TC [av
 | MID | Groß | Brighton (BHA) | 5.5 | 5.5 | 5.5 | 15 pts, 1G 1A, form 7.5, 1 CS. Excellent value, +90k in |
 | MID | Hughes (Will) | C. Palace (CRY) | 4.5 | 4.5 | 4.5 | **Non-playing** bench filler. 0 min, 0 starts |
 | FWD | Haaland | Man City (MCI) | 15.5 | 15.5 | 15.5 | **(C).** 15 pts, 2G, form 7.5, xGI/90 0.71, 180 min. 69.6% owned |
-| FWD | João Pedro | Chelsea (CHE) | 7.5 | 7.5 | 7.6 | 20 pts, 2G 2A, form 10.0, xGI 1.96. 69.4% owned. Risen £0.1 |
+| FWD | João Pedro | Chelsea (CHE) | 7.5 | 7.6 | 7.7 | 20 pts, 2G 2A, form 10.0, xGI 1.96. 69.8% owned. Risen £0.2 (sell 7.6) |
 | FWD | Calvert-Lewin | Leeds (LEE) | 6.0 | 6.0 | 6.0 | 9 pts, 1G, xG 1.05, 180 min. Nailed starter |
 
 Purchase total £99.5m + £0.5m bank = £100.0m.
-No selling-price haircuts yet — Gvardiol / Calafiori / João Pedro have each risen
-£0.1m but sell at buy price (rise not yet £0.2m).
+Gvardiol / Calafiori have risen £0.1m and still sell at buy price; João Pedro has
+risen £0.2m and sells at £7.6m (as of 2026-09-03).
 
 ## Current XI (3-4-3) — as set for GW2
 

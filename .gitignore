@@ -1,2 +1,3 @@
 fplenv/
 logs/
+.claude/settings.local.json

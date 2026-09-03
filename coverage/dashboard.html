@@ -24,26 +24,49 @@
   #countdown{font-variant-numeric:tabular-nums; font-weight:700; color:var(--fpl-cyan)}
   .facts{display:flex; gap:22px; margin-left:auto; font-size:.95rem}
   .facts .v{font-weight:700; font-size:1.1rem; display:block}
+  .facts .xi{padding-left:22px; border-left:1px solid rgba(255,255,255,.3)}
+  .facts .sub{display:block; font-size:.72rem; color:#d9cfe0; margin-top:-2px}
+  .facts .v .chip{vertical-align:2px; margin-left:4px}
   #sample-banner{display:none; background:#ffdd57; color:#4a3b00; text-align:center; padding:6px 10px; font-weight:600; font-size:.9rem}
 
   section{margin-top:30px}
   h2{font-size:1.05rem; font-weight:700; color:var(--fpl-purple); padding-bottom:8px; border-bottom:2px solid var(--fpl-purple); margin-bottom:14px}
 
+  /* Sandbox bar */
+  .sandbox-bar{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-bottom:10px; font-size:.82rem; color:var(--muted)}
+  .sandbox-tag{background:#ffdd57; color:#4a3b00; font-weight:700; padding:3px 9px; border-radius:999px; font-size:.75rem; letter-spacing:.02em}
+  .sandbox-tag.dirty{background:#ff8a65; color:#3b1200}
+  .sandbox-bar button{margin-left:auto; background:var(--fpl-purple); color:#fff; border:0; border-radius:6px; padding:6px 12px; font-weight:600; cursor:pointer; font-size:.8rem}
+  .sandbox-bar button:disabled{opacity:.45; cursor:default}
+  .sandbox-bar button:focus-visible{outline:3px solid var(--fpl-cyan); outline-offset:2px}
+  #sandbox-msg{min-height:1.2em}
+  #sandbox-msg.warn{color:#b3261e; font-weight:600}
+
   /* Pitch */
   .pitch{background:repeating-linear-gradient(0deg, var(--pitch-a) 0 64px, var(--pitch-b) 64px 128px);
          border-radius:10px; padding:22px 10px 14px; box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
-  .row{display:flex; justify-content:center; gap:12px; margin-bottom:16px; flex-wrap:wrap}
-  .pcard{background:var(--card); width:112px; border-radius:6px; overflow:hidden; text-align:center;
-         box-shadow:0 1px 3px rgba(0,0,0,.35); position:relative}
+  .row{display:flex; justify-content:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; min-height:96px}
+  .pcard{background:var(--card); width:118px; border-radius:6px; overflow:hidden; text-align:center;
+         box-shadow:0 1px 3px rgba(0,0,0,.35); position:relative; cursor:grab; user-select:none; transition:transform .08s}
+  .pcard:active{cursor:grabbing}
+  .pcard.selected{outline:3px solid var(--fpl-cyan); outline-offset:1px; transform:translateY(-3px)}
+  .pcard.dragging{opacity:.45}
+  .pcard.target{outline:3px dashed #ffdd57; outline-offset:1px}
+  .pcard.moved .club{background:#5a2d63}
   .pcard .club{background:var(--fpl-purple); color:#fff; font-weight:700; font-size:.72rem; padding:3px 0; letter-spacing:.04em}
   .pcard .name{font-weight:700; font-size:.82rem; padding:5px 4px 1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .pcard .fx{font-size:.74rem; color:var(--muted); padding-bottom:3px}
+  .pcard .fx{font-size:.74rem; color:var(--muted); padding-bottom:2px; display:flex; justify-content:center; align-items:center; gap:5px}
+  .pcard .x3{font-size:.68rem; color:var(--ink); padding-bottom:3px; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .pcard .x3 b{font-weight:700}
+  .pcard .x3 .lab{color:var(--muted); font-weight:600}
   .pcard .pr{background:#efeaf1; font-size:.76rem; font-weight:600; padding:2px 0}
+  .chip{display:inline-block; min-width:16px; padding:0 4px; border-radius:4px; font-size:.68rem; font-weight:800; line-height:16px; text-align:center}
   .badge{position:absolute; top:26px; right:4px; background:var(--fpl-purple); color:var(--fpl-cyan);
          border-radius:50%; width:20px; height:20px; font-size:.7rem; font-weight:800; line-height:20px}
   .bench{background:#0b4d2b; border-radius:0 0 10px 10px; margin-top:-6px; padding:12px 10px 10px}
   .bench .row{margin-bottom:0}
   .bench-label{color:#bfe8cf; font-size:.75rem; font-weight:600; text-align:center; margin-bottom:6px}
+  .sandbox-help{font-size:.76rem; color:var(--muted); margin-top:8px}
 
   /* Tables */
   table{width:100%; border-collapse:collapse; background:var(--card); border-radius:8px; overflow:hidden;
@@ -53,6 +76,7 @@
   thead th{background:var(--fpl-purple); color:#fff; font-weight:600; font-size:.8rem}
   tbody tr:last-child td{border-bottom:none}
   .num{font-variant-numeric:tabular-nums}
+  .tablewrap{overflow-x:auto}
 
   /* FDR grid */
   #fdr-table td.fdr{text-align:center; font-weight:600; font-size:.78rem; min-width:64px}
@@ -62,7 +86,7 @@
   #fdr-sort:focus-visible, .pcard:focus-visible{outline:3px solid var(--fpl-cyan); outline-offset:2px}
 
   .stamp{margin-top:26px; font-size:.78rem; color:var(--muted); text-align:center}
-  @media (max-width:640px){ .facts{margin-left:0} .pcard{width:96px} }
+  @media (max-width:640px){ .facts{margin-left:0; flex-wrap:wrap; gap:14px} .facts .xi{padding-left:0; border-left:0} .pcard{width:104px} }
 </style>
 </head>
 <body>
@@ -75,6 +99,8 @@
       <div><span class="v num" id="bank">—</span>Bank</div>
       <div><span class="v num" id="fts">—</span>Free transfers</div>
       <div><span class="v" id="chips">—</span>Chips left</div>
+      <div class="xi"><span class="v num" id="xi-fdr">—</span>XI avg FDR<span class="sub" id="xi-fdr-sub">this GW</span></div>
+      <div class="xi"><span class="v num" id="xi-xgi">—</span>XI xG+xA<span class="sub" id="xi-xgi-sub">proj. next 3</span></div>
     </div>
   </div>
 </header>
@@ -82,20 +108,27 @@
 <main>
   <section id="squad-section">
     <h2>Squad</h2>
-    <div class="pitch">
-      <div class="row" id="row-GK"></div>
-      <div class="row" id="row-DEF"></div>
-      <div class="row" id="row-MID"></div>
-      <div class="row" id="row-FWD"></div>
+    <div class="sandbox-bar">
+      <span class="sandbox-tag" id="sandbox-tag">SANDBOX ONLY — NOT SAVED</span>
+      <span id="sandbox-msg">Drag (or tap) a player onto another to swap XI ↔ bench. Header XI stats update live.</span>
+      <button type="button" id="sandbox-reset" disabled>Reset to saved XI</button>
+    </div>
+    <div class="pitch" id="pitch">
+      <div class="row" id="row-GK" data-pos="GK"></div>
+      <div class="row" id="row-DEF" data-pos="DEF"></div>
+      <div class="row" id="row-MID" data-pos="MID"></div>
+      <div class="row" id="row-FWD" data-pos="FWD"></div>
     </div>
     <div class="bench">
       <div class="bench-label">Bench (in order)</div>
       <div class="row" id="row-BENCH"></div>
     </div>
+    <p class="sandbox-help">FDR chip = this GW's fixture difficulty (FPL 1–5). xG / xA = projected over the next 3 fixtures (season rate × fixture multiplier). Nothing you do here changes the real team or coverage/ state.</p>
   </section>
 
   <section>
     <h2>Watchlist — transfer-in pipeline</h2>
+    <div class="tablewrap">
     <table id="watch-table">
       <thead><tr>
         <th>Player</th><th>Club</th><th>Pos</th><th>£</th><th>xG (L4)</th><th>xA (L4)</th>
@@ -103,66 +136,19 @@
       </tr></thead>
       <tbody></tbody>
     </table>
+    </div>
   </section>
 
   <section>
     <h2>Fixture difficulty — next 6 (FPL FDR) · <span id="fdr-sort" role="button" tabindex="0">sort by avg</span></h2>
-    <table id="fdr-table"><thead></thead><tbody></tbody></table>
+    <div class="tablewrap"><table id="fdr-table"><thead></thead><tbody></tbody></table></div>
   </section>
 
   <p class="stamp">Generated <span id="stamp">—</span> by fpl-analyst · read-only view of coverage/ state</p>
 </main>
 
 <script id="fpl-data" type="application/json">
-{"sample":false,"generated":"2026-08-31, 5:40 PM PT","gw":3,"deadline_iso":"2026-09-04T17:30:00Z","deadline_local":"Fri 4 Sep, 10:30 AM PT",
-"bank":0.5,"fts":1,"chips":["BB","TC","FH"],
-"squad":{"xi":[
- {"name":"Kinsky","club":"TOT","pos":"GK","fixture":"NFO (A)","price":4.5,"cap":false,"vice":false},
- {"name":"Gvardiol","club":"MCI","pos":"DEF","fixture":"COV (H)","price":5.5,"cap":false,"vice":false},
- {"name":"Calafiori","club":"ARS","pos":"DEF","fixture":"CHE (H)","price":5.5,"cap":false,"vice":false},
- {"name":"Shaw","club":"MUN","pos":"DEF","fixture":"EVE (A)","price":4.5,"cap":false,"vice":false},
- {"name":"B.Fernandes","club":"MUN","pos":"MID","fixture":"EVE (A)","price":12.0,"cap":false,"vice":true},
- {"name":"Mbeumo","club":"MUN","pos":"MID","fixture":"EVE (A)","price":8.0,"cap":false,"vice":false},
- {"name":"Semenyo","club":"MCI","pos":"MID","fixture":"COV (H)","price":8.5,"cap":false,"vice":false},
- {"name":"Groß","club":"BHA","pos":"MID","fixture":"LEE (H)","price":5.5,"cap":false,"vice":false},
- {"name":"Haaland","club":"MCI","pos":"FWD","fixture":"COV (H)","price":15.5,"cap":true,"vice":false},
- {"name":"João Pedro","club":"CHE","pos":"FWD","fixture":"ARS (A)","price":7.5,"cap":false,"vice":false},
- {"name":"Calvert-Lewin","club":"LEE","pos":"FWD","fixture":"BHA (A)","price":6.0,"cap":false,"vice":false}],
-"bench":[
- {"name":"A.Palmer","club":"IPS","pos":"GK","fixture":"LIV (H)","price":4.0},
- {"name":"Diop","club":"IPS","pos":"DEF","fixture":"LIV (H)","price":4.0},
- {"name":"van Ewijk","club":"COV","pos":"DEF","fixture":"MCI (A)","price":4.0},
- {"name":"Hughes","club":"CRY","pos":"MID","fixture":"FUL (A)","price":4.5}]},
-"watchlist":[
- {"name":"Saka","club":"ARS","pos":"MID","price":9.5,"xg4":1.27,"xa4":0.12,"xgi90":0.80,"start_pct":100,"fdr3":3.3,"e3":21.8,"delta":9.5},
- {"name":"Cherki","club":"MCI","pos":"MID","price":7.7,"xg4":0.35,"xa4":1.05,"xgi90":1.17,"start_pct":50,"fdr3":2.7,"e3":20.9,"delta":8.6},
- {"name":"C.Palmer","club":"CHE","pos":"MID","price":9.6,"xg4":0.94,"xa4":0.32,"xgi90":0.66,"start_pct":100,"fdr3":3.3,"e3":20.9,"delta":8.6},
- {"name":"Isak","club":"LIV","pos":"FWD","price":9.0,"xg4":2.08,"xa4":0.01,"xgi90":1.05,"start_pct":100,"fdr3":2.3,"e3":18.7,"delta":3.9},
- {"name":"N.Williams","club":"NFO","pos":"DEF","price":5.0,"xg4":0.12,"xa4":0.17,"xgi90":0.15,"start_pct":100,"fdr3":3.0,"e3":11.2,"delta":1.9},
- {"name":"O'Reilly","club":"MCI","pos":"DEF","price":6.5,"xg4":0.09,"xa4":0.43,"xgi90":0.31,"start_pct":100,"fdr3":2.7,"e3":9.4,"delta":0.1},
- {"name":"R.James","club":"CHE","pos":"DEF","price":5.5,"xg4":0.10,"xa4":0.07,"xgi90":0.14,"start_pct":50,"fdr3":3.3,"e3":4.2,"delta":-5.1},
- {"name":"Havertz","club":"ARS","pos":"FWD","price":7.5,"xg4":0.28,"xa4":0.06,"xgi90":0.17,"start_pct":100,"fdr3":3.3,"e3":8.4,"delta":-6.4}],
-"fdr":{"gws":["GW3","GW4","GW5","GW6","GW7","GW8"],"teams":[
- {"name":"Arsenal","cells":[{"opp":"CHE","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3}],"avg":3.0},
- {"name":"Aston Villa","cells":[{"opp":"HUL","ha":"A","d":2},{"opp":"NFO","ha":"H","d":3},{"opp":"TOT","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"NEW","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4}],"avg":3.0},
- {"name":"Bournemouth","cells":[{"opp":"NEW","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"LIV","ha":"H","d":4},{"opp":"CHE","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4}],"avg":3.3},
- {"name":"Brentford","cells":[{"opp":"SUN","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"CHE","ha":"H","d":4},{"opp":"AVL","ha":"A","d":4},{"opp":"LIV","ha":"H","d":4},{"opp":"HUL","ha":"A","d":2}],"avg":3.2},
- {"name":"Brighton","cells":[{"opp":"LEE","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"ARS","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4}],"avg":3.0},
- {"name":"Chelsea","cells":[{"opp":"ARS","ha":"A","d":5},{"opp":"HUL","ha":"H","d":2},{"opp":"BRE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3}],"avg":3.2},
- {"name":"Coventry City","cells":[{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"TOT","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2}],"avg":2.8},
- {"name":"Crystal Palace","cells":[{"opp":"FUL","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"LEE","ha":"A","d":3},{"opp":"NFO","ha":"H","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2}],"avg":2.7},
- {"name":"Everton","cells":[{"opp":"MUN","ha":"H","d":4},{"opp":"TOT","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"HUL","ha":"A","d":2},{"opp":"CHE","ha":"H","d":4},{"opp":"ARS","ha":"A","d":5}],"avg":3.3},
- {"name":"Fulham","cells":[{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4},{"opp":"MUN","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2}],"avg":2.8},
- {"name":"Hull City","cells":[{"opp":"AVL","ha":"H","d":3},{"opp":"CHE","ha":"A","d":4},{"opp":"NEW","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"FUL","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3}],"avg":3.2},
- {"name":"Ipswich Town","cells":[{"opp":"LIV","ha":"H","d":4},{"opp":"CRY","ha":"A","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2},{"opp":"MCI","ha":"A","d":5},{"opp":"NFO","ha":"H","d":3}],"avg":3.3},
- {"name":"Leeds","cells":[{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"CRY","ha":"H","d":3},{"opp":"ARS","ha":"A","d":5},{"opp":"MUN","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3}],"avg":3.3},
- {"name":"Liverpool","cells":[{"opp":"IPS","ha":"A","d":2},{"opp":"FUL","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"BRE","ha":"A","d":3},{"opp":"BHA","ha":"H","d":2}],"avg":2.7},
- {"name":"Man City","cells":[{"opp":"COV","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"LIV","ha":"A","d":4},{"opp":"IPS","ha":"H","d":2},{"opp":"AVL","ha":"A","d":4}],"avg":3.0},
- {"name":"Man Utd","cells":[{"opp":"EVE","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"FUL","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3}],"avg":3.2},
- {"name":"Newcastle","cells":[{"opp":"BOU","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"AVL","ha":"H","d":3},{"opp":"CRY","ha":"A","d":3}],"avg":2.7},
- {"name":"Nott'm Forest","cells":[{"opp":"TOT","ha":"H","d":3},{"opp":"AVL","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CRY","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2}],"avg":3.0},
- {"name":"Spurs","cells":[{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"AVL","ha":"H","d":3},{"opp":"MUN","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CHE","ha":"A","d":4}],"avg":3.2},
- {"name":"Sunderland","cells":[{"opp":"BRE","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2}],"avg":3.2}]}}
+{"sample":false,"generated":"2026-09-03, 12:29 a.m. PT","gw":3,"deadline_iso":"2026-09-04T17:30:00Z","deadline_local":"Fri 4 Sep, 10:30 AM PT","bank":0.5,"fts":1,"chips":["BB","TC","FH"],"squad":{"xi":[{"name":"Kinsky","club":"TOT","pos":"GK","fixture":"NFO (A)","fdr":3,"xg3":0,"xa3":0,"price":4.5,"cap":false,"vice":false},{"name":"Gvardiol","club":"MCI","pos":"DEF","fixture":"COV (H)","fdr":2,"xg3":0.3,"xa3":0.14,"price":5.6,"cap":false,"vice":false},{"name":"Calafiori","club":"ARS","pos":"DEF","fixture":"CHE (H)","fdr":4,"xg3":0.21,"xa3":0.78,"price":5.6,"cap":false,"vice":false},{"name":"Shaw","club":"MUN","pos":"DEF","fixture":"EVE (A)","fdr":3,"xg3":0,"xa3":0.4,"price":4.5,"cap":false,"vice":false},{"name":"B.Fernandes","club":"MUN","pos":"MID","fixture":"EVE (A)","fdr":3,"xg3":2.99,"xa3":1.05,"price":12,"cap":false,"vice":true},{"name":"Mbeumo","club":"MUN","pos":"MID","fixture":"EVE (A)","fdr":3,"xg3":3.22,"xa3":0.63,"price":8,"cap":false,"vice":false},{"name":"Semenyo","club":"MCI","pos":"MID","fixture":"COV (H)","fdr":2,"xg3":0.19,"xa3":0.93,"price":8.5,"cap":false,"vice":false},{"name":"Groß","club":"BHA","pos":"MID","fixture":"LEE (H)","fdr":2,"xg3":0.08,"xa3":0.6,"price":5.5,"cap":false,"vice":false},{"name":"Haaland","club":"MCI","pos":"FWD","fixture":"COV (H)","fdr":2,"xg3":2.21,"xa3":0.03,"price":15.5,"cap":true,"vice":false},{"name":"João Pedro","club":"CHE","pos":"FWD","fixture":"ARS (A)","fdr":5,"xg3":2.65,"xa3":0.14,"price":7.7,"cap":false,"vice":false},{"name":"Calvert-Lewin","club":"LEE","pos":"FWD","fixture":"BHA (A)","fdr":3,"xg3":1.65,"xa3":0.03,"price":6,"cap":false,"vice":false}],"bench":[{"name":"A.Palmer","club":"IPS","pos":"GK","fixture":"LIV (H)","fdr":4,"xg3":0,"xa3":0,"price":4},{"name":"Diop","club":"IPS","pos":"DEF","fixture":"LIV (H)","fdr":4,"xg3":0,"xa3":0.01,"price":4},{"name":"van Ewijk","club":"COV","pos":"DEF","fixture":"MCI (A)","fdr":5,"xg3":0,"xa3":0.29,"price":4},{"name":"Hughes","club":"CRY","pos":"MID","fixture":"FUL (A)","fdr":3,"xg3":0,"xa3":0,"price":4.5}]},"watchlist":[{"name":"Saka","club":"ARS","pos":"MID","price":9.5,"xg4":1.27,"xa4":0.12,"xgi90":0.8,"start_pct":100,"fdr3":3.3,"e3":21.8,"delta":9.5},{"name":"Cherki","club":"MCI","pos":"MID","price":7.7,"xg4":0.35,"xa4":1.05,"xgi90":1.17,"start_pct":50,"fdr3":2.7,"e3":20.9,"delta":8.6},{"name":"C.Palmer","club":"CHE","pos":"MID","price":9.6,"xg4":0.94,"xa4":0.32,"xgi90":0.66,"start_pct":100,"fdr3":3.3,"e3":20.9,"delta":8.6},{"name":"Isak","club":"LIV","pos":"FWD","price":9,"xg4":2.08,"xa4":0.01,"xgi90":1.05,"start_pct":100,"fdr3":2.3,"e3":18.7,"delta":3.9},{"name":"N.Williams","club":"NFO","pos":"DEF","price":5,"xg4":0.12,"xa4":0.17,"xgi90":0.15,"start_pct":100,"fdr3":3,"e3":11.2,"delta":1.9},{"name":"O'Reilly","club":"MCI","pos":"DEF","price":6.5,"xg4":0.09,"xa4":0.43,"xgi90":0.31,"start_pct":100,"fdr3":2.7,"e3":9.4,"delta":0.1},{"name":"R.James","club":"CHE","pos":"DEF","price":5.5,"xg4":0.1,"xa4":0.07,"xgi90":0.14,"start_pct":50,"fdr3":3.3,"e3":4.2,"delta":-5.1},{"name":"Havertz","club":"ARS","pos":"FWD","price":7.5,"xg4":0.28,"xa4":0.06,"xgi90":0.17,"start_pct":100,"fdr3":3.3,"e3":8.4,"delta":-6.4}],"fdr":{"gws":["GW3","GW4","GW5","GW6","GW7","GW8"],"teams":[{"name":"Arsenal","cells":[{"opp":"CHE","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3}],"avg":3},{"name":"Aston Villa","cells":[{"opp":"HUL","ha":"A","d":2},{"opp":"NFO","ha":"H","d":3},{"opp":"TOT","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"NEW","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4}],"avg":3},{"name":"Bournemouth","cells":[{"opp":"NEW","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3},{"opp":"LIV","ha":"H","d":4},{"opp":"CHE","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4}],"avg":3.3},{"name":"Brentford","cells":[{"opp":"SUN","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"CHE","ha":"H","d":4},{"opp":"AVL","ha":"A","d":4},{"opp":"LIV","ha":"H","d":4},{"opp":"HUL","ha":"A","d":2}],"avg":3.2},{"name":"Brighton","cells":[{"opp":"LEE","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"ARS","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3},{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4}],"avg":3},{"name":"Chelsea","cells":[{"opp":"ARS","ha":"A","d":5},{"opp":"HUL","ha":"H","d":2},{"opp":"BRE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3}],"avg":3.2},{"name":"Coventry City","cells":[{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"NFO","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"TOT","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2}],"avg":2.8},{"name":"Crystal Palace","cells":[{"opp":"FUL","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"LEE","ha":"A","d":3},{"opp":"NFO","ha":"H","d":3},{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2}],"avg":2.7},{"name":"Everton","cells":[{"opp":"MUN","ha":"H","d":4},{"opp":"TOT","ha":"A","d":3},{"opp":"IPS","ha":"H","d":2},{"opp":"HUL","ha":"A","d":2},{"opp":"CHE","ha":"H","d":4},{"opp":"ARS","ha":"A","d":5}],"avg":3.3},{"name":"Fulham","cells":[{"opp":"CRY","ha":"H","d":3},{"opp":"LIV","ha":"A","d":4},{"opp":"MUN","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2}],"avg":2.8},{"name":"Hull City","cells":[{"opp":"AVL","ha":"H","d":3},{"opp":"CHE","ha":"A","d":4},{"opp":"NEW","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"FUL","ha":"A","d":3},{"opp":"BRE","ha":"H","d":3}],"avg":3.2},{"name":"Ipswich Town","cells":[{"opp":"LIV","ha":"H","d":4},{"opp":"CRY","ha":"A","d":3},{"opp":"EVE","ha":"A","d":3},{"opp":"FUL","ha":"H","d":2},{"opp":"MCI","ha":"A","d":5},{"opp":"NFO","ha":"H","d":3}],"avg":3.3},{"name":"Leeds","cells":[{"opp":"BHA","ha":"A","d":3},{"opp":"NEW","ha":"H","d":2},{"opp":"CRY","ha":"H","d":3},{"opp":"ARS","ha":"A","d":5},{"opp":"MUN","ha":"H","d":4},{"opp":"SUN","ha":"A","d":3}],"avg":3.3},{"name":"Liverpool","cells":[{"opp":"IPS","ha":"A","d":2},{"opp":"FUL","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"BRE","ha":"A","d":3},{"opp":"BHA","ha":"H","d":2}],"avg":2.7},{"name":"Man City","cells":[{"opp":"COV","ha":"H","d":2},{"opp":"MUN","ha":"A","d":4},{"opp":"SUN","ha":"H","d":2},{"opp":"LIV","ha":"A","d":4},{"opp":"IPS","ha":"H","d":2},{"opp":"AVL","ha":"A","d":4}],"avg":3},{"name":"Man Utd","cells":[{"opp":"EVE","ha":"A","d":3},{"opp":"MCI","ha":"H","d":4},{"opp":"FUL","ha":"A","d":3},{"opp":"TOT","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"BOU","ha":"H","d":3}],"avg":3.2},{"name":"Newcastle","cells":[{"opp":"BOU","ha":"H","d":3},{"opp":"LEE","ha":"A","d":3},{"opp":"HUL","ha":"H","d":2},{"opp":"COV","ha":"A","d":2},{"opp":"AVL","ha":"H","d":3},{"opp":"CRY","ha":"A","d":3}],"avg":2.7},{"name":"Nott'm Forest","cells":[{"opp":"TOT","ha":"H","d":3},{"opp":"AVL","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CRY","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"IPS","ha":"A","d":2}],"avg":3},{"name":"Spurs","cells":[{"opp":"NFO","ha":"A","d":3},{"opp":"EVE","ha":"H","d":3},{"opp":"AVL","ha":"H","d":3},{"opp":"MUN","ha":"A","d":4},{"opp":"COV","ha":"H","d":2},{"opp":"CHE","ha":"A","d":4}],"avg":3.2},{"name":"Sunderland","cells":[{"opp":"BRE","ha":"A","d":3},{"opp":"ARS","ha":"H","d":4},{"opp":"MCI","ha":"A","d":5},{"opp":"BHA","ha":"H","d":2},{"opp":"BOU","ha":"A","d":3},{"opp":"LEE","ha":"H","d":2}],"avg":3.2}]}}
 </script>
 
 <script>
@@ -189,25 +175,164 @@
   }
   tick(); setInterval(tick, 30000);
 
-  // Pitch
-  function card(p, showBadge){
+  // ---------------------------------------------------------------------
+  // Squad sandbox. `saved` is the XI/bench as written by the agent (read-only
+  // truth). `state` is the client-side what-if copy. Nothing here persists.
+  // ---------------------------------------------------------------------
+  const saved = { xi: D.squad.xi.map(p => Object.assign({}, p)),
+                  bench: D.squad.bench.map(p => Object.assign({}, p)) };
+  let state = clone(saved);
+  let selected = null;   // {list:'xi'|'bench', idx}
+
+  function clone(s){ return { xi: s.xi.map(p => Object.assign({}, p)), bench: s.bench.map(p => Object.assign({}, p)) }; }
+  function fmt(n, dp){ return Number(n || 0).toFixed(dp); }
+  function fdrChip(d){ return '<span class="chip d' + d + '">' + d + '</span>'; }
+
+  function card(p, ref){
     const el = document.createElement('div');
-    el.className = 'pcard'; el.tabIndex = 0;
+    el.className = 'pcard'; el.tabIndex = 0; el.draggable = true;
+    el.dataset.list = ref.list; el.dataset.idx = ref.idx;
+    el.setAttribute('aria-label', p.name + ', ' + p.pos + ', ' + p.fixture + ', FDR ' + p.fdr);
     el.innerHTML =
       '<div class="club">' + p.club + '</div>' +
       '<div class="name">' + p.name + '</div>' +
-      '<div class="fx">' + p.fixture + '</div>' +
+      '<div class="fx"><span>' + p.fixture + '</span>' + fdrChip(p.fdr) + '</div>' +
+      '<div class="x3"><span class="lab">xG</span> <b>' + fmt(p.xg3,2) + '</b> <span class="lab">xA</span> <b>' + fmt(p.xa3,2) + '</b></div>' +
       '<div class="pr num">£' + Number(p.price).toFixed(1) + '</div>';
-    if (showBadge && (p.cap || p.vice)) {
+    if (ref.list === 'xi' && (p.cap || p.vice)) {
       const b = document.createElement('div');
       b.className = 'badge'; b.textContent = p.cap ? 'C' : 'V';
       el.appendChild(b);
     }
+    // was this player in the saved XI/bench at the same slot type?
+    const savedList = saved.xi.some(q => q.name === p.name && q.club === p.club) ? 'xi' : 'bench';
+    if (savedList !== ref.list) el.classList.add('moved');
+    if (selected && selected.list === ref.list && selected.idx === ref.idx) el.classList.add('selected');
     return el;
   }
-  ['GK','DEF','MID','FWD'].forEach(pos =>
-    D.squad.xi.filter(p => p.pos === pos).forEach(p => $('row-' + pos).appendChild(card(p, true))));
-  D.squad.bench.forEach(p => $('row-BENCH').appendChild(card(p, false)));
+
+  function formationOf(xi){
+    const f = {GK:0, DEF:0, MID:0, FWD:0};
+    xi.forEach(p => f[p.pos] = (f[p.pos]||0) + 1);
+    return f;
+  }
+  function validXI(xi){
+    if (xi.length !== 11) return 'XI must have 11 players';
+    const f = formationOf(xi);
+    if (f.GK !== 1) return 'Exactly one goalkeeper must start';
+    if (f.DEF < 3 || f.DEF > 5) return 'Need 3–5 defenders (have ' + f.DEF + ')';
+    if (f.MID < 2 || f.MID > 5) return 'Need 2–5 midfielders (have ' + f.MID + ')';
+    if (f.FWD < 1 || f.FWD > 3) return 'Need 1–3 forwards (have ' + f.FWD + ')';
+    return null;
+  }
+
+  function renderSquad(){
+    ['GK','DEF','MID','FWD'].forEach(pos => $('row-' + pos).innerHTML = '');
+    $('row-BENCH').innerHTML = '';
+    state.xi.forEach((p, i) => $('row-' + p.pos).appendChild(card(p, {list:'xi', idx:i})));
+    state.bench.forEach((p, i) => $('row-BENCH').appendChild(card(p, {list:'bench', idx:i})));
+    renderXIStats();
+    const dirty = JSON.stringify(state) !== JSON.stringify(saved);
+    $('sandbox-reset').disabled = !dirty;
+    const tag = $('sandbox-tag');
+    tag.textContent = dirty ? 'SANDBOX — UNSAVED WHAT-IF' : 'SANDBOX ONLY — NOT SAVED';
+    tag.classList.toggle('dirty', dirty);
+    const capOnBench = state.bench.some(p => p.cap);
+    if (capOnBench) setMsg('Captain is on the bench in this what-if — the real armband would move to the vice.', true);
+  }
+
+  function renderXIStats(){
+    const xi = state.xi;
+    const avg = xi.reduce((s,p) => s + Number(p.fdr||0), 0) / (xi.length || 1);
+    const xg = xi.reduce((s,p) => s + Number(p.xg3||0), 0);
+    const xa = xi.reduce((s,p) => s + Number(p.xa3||0), 0);
+    const band = Math.min(5, Math.max(1, Math.round(avg)));
+    $('xi-fdr').innerHTML = fmt(avg,2) + '<span class="chip d' + band + '">' + band + '</span>';
+    $('xi-xgi').textContent = fmt(xg + xa, 1);
+    $('xi-xgi-sub').textContent = 'xG ' + fmt(xg,1) + ' · xA ' + fmt(xa,1) + ' · proj. next 3';
+    const f = formationOf(xi);
+    $('xi-fdr-sub').textContent = 'this GW · ' + f.DEF + '-' + f.MID + '-' + f.FWD;
+  }
+
+  function setMsg(text, warn){
+    const m = $('sandbox-msg');
+    m.textContent = text; m.classList.toggle('warn', !!warn);
+  }
+
+  // Swap two slots (either list). Bench↔bench reorders; xi↔bench swaps.
+  function trySwap(a, b){
+    if (!a || !b || (a.list === b.list && a.idx === b.idx)) return;
+    const next = clone(state);
+    const pa = next[a.list][a.idx], pb = next[b.list][b.idx];
+    if (a.list === 'xi' && b.list === 'xi') {
+      // XI↔XI: nothing to gain (positions are fixed rows) — ignore quietly
+      setMsg('Both players already start. Swap an XI player with a bench player instead.', false);
+      return;
+    }
+    next[a.list][a.idx] = pb; next[b.list][b.idx] = pa;
+    if (a.list !== b.list) {
+      if (pa.pos === 'GK' && pb.pos !== 'GK' || pb.pos === 'GK' && pa.pos !== 'GK') {
+        setMsg('Goalkeepers can only swap with goalkeepers.', true); return;
+      }
+      const err = validXI(next.xi);
+      if (err) { setMsg('Invalid formation: ' + err + '.', true); return; }
+    }
+    state = next; selected = null;
+    setMsg(a.list === b.list ? 'Bench order changed (what-if only).' : 'Swapped ' + pa.name + ' ↔ ' + pb.name + ' (what-if only).', false);
+    renderSquad();
+  }
+
+  function refOf(el){
+    const c = el && el.closest ? el.closest('.pcard') : null;
+    return c ? {list: c.dataset.list, idx: Number(c.dataset.idx)} : null;
+  }
+
+  const squadRoot = $('squad-section');
+  // click / tap: select, then select target
+  squadRoot.addEventListener('click', e => {
+    const r = refOf(e.target); if (!r) return;
+    if (!selected) { selected = r; renderSquad(); setMsg('Selected ' + state[r.list][r.idx].name + ' — now tap the player to swap with.', false); return; }
+    const a = selected; selected = null;
+    if (a.list === r.list && a.idx === r.idx) { renderSquad(); setMsg('Selection cleared.', false); return; }
+    trySwap(a, r);
+    renderSquad();
+  });
+  squadRoot.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const r = refOf(e.target); if (!r) return;
+    e.preventDefault(); e.target.click();
+  });
+  // native drag & drop
+  let dragFrom = null;
+  squadRoot.addEventListener('dragstart', e => {
+    dragFrom = refOf(e.target); if (!dragFrom) return;
+    e.target.classList.add('dragging');
+    try { e.dataTransfer.setData('text/plain', 'p'); e.dataTransfer.effectAllowed = 'move'; } catch(_){}
+  });
+  squadRoot.addEventListener('dragend', () => {
+    dragFrom = null;
+    squadRoot.querySelectorAll('.dragging,.target').forEach(el => el.classList.remove('dragging','target'));
+  });
+  squadRoot.addEventListener('dragover', e => {
+    const c = e.target.closest && e.target.closest('.pcard');
+    if (!c || !dragFrom) return;
+    e.preventDefault();
+    squadRoot.querySelectorAll('.target').forEach(el => el.classList.remove('target'));
+    c.classList.add('target');
+  });
+  squadRoot.addEventListener('drop', e => {
+    const to = refOf(e.target); if (!to || !dragFrom) return;
+    e.preventDefault();
+    const from = dragFrom; dragFrom = null; selected = null;
+    trySwap(from, to);
+    renderSquad();
+  });
+  $('sandbox-reset').addEventListener('click', () => {
+    state = clone(saved); selected = null;
+    renderSquad(); setMsg('Reset to the saved XI.', false);
+  });
+
+  renderSquad();
 
   // Watchlist (sorted: closest to promotion first)
   const wt = document.querySelector('#watch-table tbody');
