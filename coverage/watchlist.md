@@ -1,7 +1,7 @@
 # Watchlist — transfer-in pipeline
 > Cap 10 names, all outside the current 15. Refresh every plan run.
 
-**Seeded:** 2026-08-31 (GW2 in progress) · **Slots used:** 8 / 10
+**Seeded:** 2026-08-31 (GW2 in progress) · **Slots used:** 10 / 10 (Gakpo, Dedić added 2026-09-03 — see fixture-run scan)
 **Budget reality:** bank £0.5m. Feasible spend = £0.5m + sale price of whoever goes.
 **Stats basis:** GW1–GW2 via MCP. ⚠️ Arsenal's GW2 fixture (AVL away) kicked off
 2026-08-31 19:00 UTC — Saka's and Havertz's rows are a **2-game sample that is
@@ -22,6 +22,8 @@ comparable even though clubs are at different points in GW2.
 | **N.Williams** | NFO | DEF | 5.0 | 0.12 | 0.17 | 0.15 | 180 | 100% | TOT H(3) · AVL A(4) · COV H(2) | **11.2** | **+3.9** vs Shaw | ✅ **Yes, exactly** — Shaw (4.5) + 0.5 = 5.0 |
 | O'Reilly *(OOP)* | MCI | DEF | 6.5 | 0.09 | 0.43 | 0.31 | 150 | 100% | COV H(2) · MUN A(4) · SUN H(2) | 9.4 | **+2.1** vs Shaw | ❌ No single DEF sale reaches 6.5 (best is Gvardiol/Calafiori 5.5 + 0.5 = 6.0) |
 | R.James *(OOP)* | CHE | DEF | 5.5 | 0.10 | 0.07 | 0.14 | 112 | 50% (1/2) | ARS A(5) · HUL H(2) · BRE A(3) | 4.2 | **−3.1** vs Shaw | ✅ affordable, but negative EV |
+| **Gakpo** | LIV | MID | 7.0 | 0.30 | 0.80 | 0.62 | 160 | 100% | IPS A(2) · FUL H(2) · BOU A(3) | **21.6** | **+11.3** vs Semenyo | ✅ **Yes** — sell Semenyo (8.5) + 0.5 = 9.0, leaves £2.0m |
+| **Dedić** | NEW | DEF | 4.5 | 0.03 | 0.06 | 0.05 | 180 | 100% | BOU H(3) · LEE A(3) · HUL H(2) | **13.8** | **+6.5** vs Shaw | ✅ **Yes, exactly** — Shaw (4.5) sale, or Diop/van Ewijk (4.0) + 0.5 for a bench repair |
 
 **Weakest same-position starters used as the baseline:**
 Semenyo (MID, E[3] ≈ 10.3) · Calvert-Lewin (FWD, ≈ 12.8) · **Shaw (DEF, 7.3)**.
@@ -67,6 +69,52 @@ are both affordable, but you have **1 free transfer**. Cherki is roughly 2.7×
 the EV gain. N.Williams is the move that serves the Bench Boost repair and
 principle #4. Cherki is almost certainly the right single call — this gets the
 full EV table at the GW3 plan run.
+
+## Fixture-run scan — CRY / LIV / NEW (2026-09-03, GW2 complete)
+
+Anik asked which players from the three clubs with the easiest next-6 FDR
+(Crystal Palace, Liverpool, Newcastle — all 2.67 avg) are worth considering.
+Full model run, E[3] = GW3–GW5, P(start) 0.9 for regular starters.
+Fixture multipliers: LIV 3.30 (IPS A/2 · FUL H/2 · BOU A/3), NEW 3.15
+(BOU H/3 · LEE A/3 · HUL H/2), CRY 3.15 (FUL A/3 · IPS H/2 · LEE A/3).
+
+| Player | Club | Pos | £ | Form | xGI (min) | E[3] | Δ vs weakest | Affordable? | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| **Gakpo** | LIV | MID | 7.0 | 8.5 | 1.10 (160) | **21.6** | **+11.3** Semenyo | ✅ | **Added.** Best of the scan; top club (principle #2). Form carries 3 bonus — real rate is xGI/90 0.62 |
+| Szoboszlai | LIV | MID | 7.0 | 6.0 | 1.45 (180) | 19.0 | +8.7 Semenyo | ✅ | Clears bar, 41.5% owned, xG 1.01. Second Liverpool MID behind Gakpo; not added (cap) |
+| Isak | LIV | FWD | 9.0 | 5.0 | 2.09 (180) | 19.2 | +6.4 Calvert-Lewin | ❌ 6.5 < 9.0 | Already listed. Still cash-blocked |
+| Hall | NEW | DEF | 5.1 | 7.0 | 0.69 (180) | 18.1 | +10.8 Shaw | ❌ **5.0 < 5.1** | £0.1m short on a Shaw sale. Best DEF in the scan; +397k in, just risen — gap will widen. Not added |
+| Elanga | NEW | MID | 6.1 | 8.5 | 0.53 (156) | 17.7 | +7.4 Semenyo | ✅ | 2 goals from xG 0.42 — pure overperformance. Not a top club for attack (#2). Not added |
+| Wissa | NEW | FWD | 6.1 | 6.0 | 1.37 (171) | 17.2 | +4.4 Calvert-Lewin | ✅ 6.5 ≥ 6.1 | Clears bar and affordable, but conflicts with #2 (Newcastle attack). Not added; revisit if CL keeps blanking |
+| **Dedić** | NEW | DEF | 4.5 | 6.0 | 0.09 (180) | **13.8** | **+6.5** Shaw | ✅ exactly | **Added.** Fits principle #4 to the letter (cheap DEF, small club, FDR-rotated). Also the cheapest bench repair (Diop/van Ewijk → Dedić) |
+| Horníček | NEW | GK | 5.0 | 4.0 | — (180) | 10.5 | +4.2 Kinsky | ✅ exactly | Real gain but a GK swap is the lowest-priority FT. Not added |
+| Wirtz | LIV | MID | 7.5 | 3.0 | 0.73 (152) | 11.7 | +1.4 Semenyo | ✅ | Below bar. −136k out |
+| Nketiah | CRY | FWD | 5.5 | 1.5 | 1.54 (122) | 11.8 | −1.0 Calvert-Lewin | ✅ | xGI/90 1.14 is the best rate at Palace but 122 min and P(start) ~0.75. Watch |
+| Wharton | CRY | MID | 5.5 | 3.0 | 0.31 (180) | 8.5 | −1.8 Semenyo | ✅ | No |
+| Henderson | CRY | GK | 5.0 | 1.5 | — (180) | 7.0 | +0.7 Kinsky | ✅ | No — 6 conceded, xGC 3.33 |
+
+**Crystal Palace: easy fixtures, no players.** 0 clean sheets, xGC 3.33 in
+two games, Mateta out (hamstring, MCP: expected back 11 Oct), Sarr/Eze gone,
+top scorer on 6 pts. Nothing at Palace clears the promotion bar. The fixture
+run is real but there is no asset to carry it.
+
+**Liverpool: the fixtures belong to the midfield.** Salah is not in the game
+this season and Ekitiké is out (Achilles, no return date), so Isak is the only
+fit forward and he is cash-blocked. Gakpo (21.6) and Szoboszlai (19.0) are
+both promotable on a Semenyo sale.
+
+**Newcastle: the defence is the play, per principle #4.** Hall is the best
+asset but £0.1m out of reach; Dedić is the affordable version. Wissa and
+Elanga clear the bar on EV but are exactly the kind of small-club attacking
+buy principle #2 says to avoid.
+
+**Effect on the pending GW3 call:** Semenyo → **Gakpo (21.6)** now edges
+Semenyo → **Cherki (20.9)**. The 0.7 gap is inside model noise; the real
+difference is minutes certainty (Gakpo 160/180 and both starts, Cherki 108
+and 1 start) against Cherki's higher ceiling (xGI/90 1.17) and the £0.7m
+extra Gakpo leaves in the bank. Cherki has risen to £7.7m and is still +1.27M
+in this GW, so his price is the live risk. Decide at the plan run with fresh
+minutes data.
 
 ## OOP scan (per structure principle #3)
 
