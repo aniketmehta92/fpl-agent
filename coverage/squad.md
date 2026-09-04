@@ -3,13 +3,14 @@
 
 **Last verified:** 2026-08-31 via authenticated MCP (`get_my_current_team`) — VERIFIED
 **Manager:** Aniket Mehta · Team "qqq" · ID 3265587 · Region USA · Season 1
-**Overall:** 152 pts · OR 650,787 · GW2 103 pts (GW2 rank 244,328) · 0 transfers made all season
+**Overall:** 163 pts · OR 845,574 · GW2 final 114 pts (GW2 rank 338,945) · 0 transfers made all season · *(2026-09-03 via `get_team`, GW2 complete)*
 
 Bank: £0.5m | Free transfers: 1 | Team value: £99.9m (squad, at current prices) / £100.4m (incl. bank) · sell value £99.6m
 
 > Price check 2026-09-03 (GW2 complete, GW3 deadline Fri 4 Sep 17:30 UTC): João Pedro
-> now £7.7m (sell £7.6m — first £0.1m of profit banked); Gvardiol and Calafiori £5.6m
-> (sell still £5.5m). Everyone else unchanged.
+> now £7.7m (sell £7.6m — first £0.1m of profit banked); Calafiori £5.7m (sell £5.6m);
+> Gvardiol £5.6m (sell still £5.5m). Everyone else unchanged. FPL reports team value
+> £100.2m incl. bank.
 Chips remaining: WC1 [PLAYED] WC2 [ — not yet released ] BB [available] TC [available] FH [available]
 
 > ⚠️ Wildcard already spent (GW1/2 — before this log existed; 0 transfers recorded,
@@ -23,7 +24,7 @@ Chips remaining: WC1 [PLAYED] WC2 [ — not yet released ] BB [available] TC [av
 | GK  | Kinsky | Spurs (TOT) | 4.5 | 4.5 | 4.5 | Starter, 180 min. 5 GC, xGC 4.59 — 0 CS. −97k out this GW |
 | GK  | Palmer (Alex) | Ipswich (IPS) | 4.0 | 4.0 | 4.0 | **Non-playing** 4.0 bench filler. 0 min, 0 starts |
 | DEF | Gvardiol | Man City (MCI) | 5.5 | 5.5 | 5.6 | 14 pts, 1G 1A, form 7.0. +£0.1 risen. +230k in |
-| DEF | Calafiori | Arsenal (ARS) | 5.5 | 5.5 | 5.6 | 9 pts in 80 min, 1 CS. 41.5% owned. Rotation/minutes watch |
+| DEF | Calafiori | Arsenal (ARS) | 5.5 | 5.6 | 5.7 | 20 pts, 2A 2CS in 170 min, form 10.0. 43.7% owned. Risen £0.2 |
 | DEF | Shaw | Man Utd (MUN) | 4.5 | 4.5 | 4.5 | 162 min, 0 CS, 3 pts. xGC 2.07. −103k out |
 | DEF | Diop | Ipswich (IPS) | 4.0 | 4.0 | 4.0 | Bench. Plays (180 min) but 6 GC, xGC 5.43 — worst defence exposure |
 | DEF | van Ewijk | Coventry (COV) | 4.0 | 4.0 | 4.0 | Bench. Plays (180 min), 3 pts. Promoted side |

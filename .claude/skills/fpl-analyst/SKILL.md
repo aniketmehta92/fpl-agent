@@ -55,6 +55,7 @@ server version adds write capability.
 | `season-plan.md` | Chip calendar, target DGWs/BGWs, team-structure principles | When plan changes |
 | `decisions.md` | Append-only log: GW, action, rationale, E[Δpts], actual outcome | Every transfer + every review |
 | `briefs/gw{N}-{mode}.md` | The output brief for each run | Every run |
+| `elite-squads.md` | Ten public analysts' 15-man squads (team IDs inside) tallied by ownership count; last completed GW only | plan |
 | `dashboard.html` | Rendered FPL-style dashboard (generated — never hand-edit) | Every run |
 
 ## Run modes
@@ -70,6 +71,9 @@ server version adds write capability.
    expected-goals field, fetch it directly from
    fantasy.premierleague.com/api/bootstrap-static/ (public, no auth).
 4. Project E[pts] (model below) for next 1 / next 3 GWs.
+   Also refresh `elite-squads.md` (`get_team` per panel ID for the last
+   completed GW, retally). Elite ownership is context for the brief, never
+   a substitute for the EV math.
 5. Provisional transfer + captain recommendation with EV math.
 6. Write `briefs/gw{N}-plan.md`.
 
