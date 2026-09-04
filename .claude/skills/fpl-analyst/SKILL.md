@@ -178,15 +178,20 @@ Data contract (all fields required) — **v2, 2026-09-03**:
     model uses. 0.00 for players with no minutes. Two decimals.
   - `price` = current price (what FPL shows), not buy price.
 - `watchlist[]`: `{name, club, pos, price, xg4, xa4, xgi90, start_pct,
-  fdr3, e3, delta}` where `delta` = E[Δpts next 3] − 2.0 vs. weakest
-  same-position starter (the promotion distance)
+  fdr3, xg3, xa3, e3, delta}` where `xg3`/`xa3` are the same next-3
+  projection as the squad cards, and `delta` = E[Δpts next 3] − 2.0 vs.
+  weakest same-position starter (the promotion distance)
 - `fdr.gws`: next-6 GW labels; `fdr.teams[]` (all 20):
-  `{name, cells:[{opp, ha, d}], avg}` with `d` = FPL's native 1–5 FDR
+  `{name, pos, p, gf, ga, cells:[{opp, ha, d}], avg}` with `d` = FPL's
+  native 1–5 FDR and `pos`/`p`/`gf`/`ga` = league position, played, goals
+  for/against **computed from finished fixtures in the public
+  `api/fixtures/` endpoint** (bootstrap `teams` results fields are unpopulated
+  this season). Order `teams` by `pos`.
 - `elite` (section 4, from `coverage/elite-squads.md`): `{gw:"GW2", n:10,
   panel:[analyst display names], players:[{name, club, pos, price, held,
-  owned}], singles:[names held by exactly 1]}` — `players` = everyone held
-  by ≥2 of the panel, `owned` = in Anik's current 15. Analyst names only;
-  never put team IDs in the page.
+  xg3, xa3, owned}], singles:[names held by exactly 1]}` — `players` =
+  everyone held by ≥2 of the panel, `owned` = in Anik's current 15. Analyst
+  names only; never put team IDs in the page.
 
 What the template does with it (so the agent does not duplicate it):
 - Section 4 renders the elite table sorted by `held` with a bar, and bolds

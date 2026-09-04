@@ -33,7 +33,7 @@ Anik's team for comparison: 114 pts GW2, OR 845,574.
 | Player | Club | Pos | £ | Held by | Anik? | Note |
 |---|---|---|---|---|---|---|
 | **B.Fernandes** | MUN | MID | 12.0 | **10/10** | ✅ | Captained by 9/10 |
-| **Calvert-Lewin** | LEE | FWD | 6.0 | **10/10** | ✅ | The consensus budget FWD |
+| **Calvert-Lewin** | LEE | FWD | 6.0 | **10/10** | ❌ *(sold GW3 for Wissa)* | The consensus budget FWD |
 | **João Pedro** | CHE | FWD | 7.7 | **9/10** | ✅ | Focal the only exception |
 | **Calafiori** | ARS | DEF | 5.7 | **9/10** | ✅ | Sertalp the only exception |
 | **Mbeumo** | MUN | MID | 8.0 | **9/10** | ✅ | Sertalp the only exception |
@@ -60,12 +60,12 @@ Anik's team for comparison: 114 pts GW2, OR 845,574.
 | Gomez | BHA | MID | 5.0 | 2/10 | ❌ | |
 | Diop | IPS | DEF | 4.0 | 2/10 | ✅ | Focal, Harry |
 | Semenyo | MCI | MID | 8.5 | 1/10 | ✅ | FPL Salah only |
-| Shaw | MUN | DEF | 4.5 | 1/10 | ✅ | FPL General only |
+| Shaw | MUN | DEF | 4.5 | 1/10 | ❌ *(sold GW3 for Konsa)* | FPL General only |
 | van Ewijk | COV | DEF | 4.0 | 1/10 | ✅ | Sertalp only |
 | N.Williams | NFO | DEF | 5.0 | 1/10 | ❌ (watchlist) | FPL Salah, benched |
 | Roefs · E.Le Fée · Ndiaye · Scherpen · O'Shea · Lammens · Tarkowski · Ødegaard · Brobbey · Hume · Thomas · Tavernier · Rushworth · Scott · Hinshelwood | | | | 1/10 each | ❌ | |
 
-**Zero of ten:** Gvardiol, Hughes, A.Palmer (Anik's) · Cherki, Saka, Gakpo,
+**Zero of ten:** Gvardiol, Hughes, A.Palmer, Wissa, Konsa (Anik's) · Cherki, Saka, Gakpo,
 Dedić, Hall, Havertz, R.James (watchlist). Cherki at 0/10 despite 1.27M
 transfers in this GW means the elite were not early on him — whether they
 follow for GW3 is only visible after Friday's deadline.

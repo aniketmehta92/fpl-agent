@@ -25,8 +25,15 @@ comparable even though clubs are at different points in GW2.
 | **Gakpo** | LIV | MID | 7.0 | 0.30 | 0.80 | 0.62 | 160 | 100% | IPS A(2) · FUL H(2) · BOU A(3) | **21.6** | **+11.3** vs Semenyo | ✅ **Yes** — sell Semenyo (8.5) + 0.5 = 9.0, leaves £2.0m |
 | **Dedić** | NEW | DEF | 4.5 | 0.03 | 0.06 | 0.05 | 180 | 100% | BOU H(3) · LEE A(3) · HUL H(2) | **13.8** | **+6.5** vs Shaw | ✅ **Yes, exactly** — Shaw (4.5) sale, or Diop/van Ewijk (4.0) + 0.5 for a bench repair |
 
-**Weakest same-position starters used as the baseline:**
-Semenyo (MID, E[3] ≈ 10.3) · Calvert-Lewin (FWD, ≈ 12.8) · **Shaw (DEF, 7.3)**.
+**Weakest same-position starters used as the baseline (re-based 2026-09-04
+after Anik's GW3 moves — CL and Shaw are gone):**
+Semenyo (MID, E[3] ≈ 10.3) · **Wissa (FWD, ≈ 17.2)** · **Diop (DEF, ≈ 6.6)**.
+Konsa is technically the weakest DEF starter (E[3] ≈ 1.5 on 11 minutes) but he
+is not a viable starter, so Diop is the realistic replacement baseline. The
+table's Δ column is stale; the dashboard carries the re-based values:
+Gakpo +9.3 · Saka +9.5 · Cherki +8.6 · C.Palmer +8.6 · Dedić +5.2 ·
+N.Williams +2.6 · O'Reilly +0.8 · **Isak 0.0** (Wissa raised the FWD bar) ·
+R.James −4.4 · Havertz −10.8. Full rewrite at the GW4 plan run.
 
 > **Baseline correction (2026-08-31).** Shaw's DEF baseline was initially
 > estimated at 7.7 using an assumed flat FDR 3. His real fixtures (EVE A/3,
