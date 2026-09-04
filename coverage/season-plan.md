@@ -1,7 +1,7 @@
 # Season plan — 2026/27
 
 **Last updated:** 2026-08-31 (GW2 in progress)
-**Chips left:** BB · TC · FH (Wildcard 1 already played — see squad.md)
+**Chips left:** first half (GW1–19): BB1 · TC1 · FH1 (WC1 played) · second half (GW20–38): WC2 · BB2 · TC2 · FH2 — **two full sets, verified 2026-09-04 from bootstrap-static `chips`**. First-half chips expire unused at GW19.
 
 ---
 
@@ -66,25 +66,46 @@ numbers, so **no claimed DGW number below is sourced — all are derived.**
 
 ## Provisional chip calendar
 
+> **Rule set, verified 2026-09-04** (bootstrap-static `chips`, 8 entries):
+> Wildcard / Free Hit / Bench Boost / Triple Captain are each available **once
+> in GW1(2)–19 and once more in GW20–38**. Unused first-half chips are lost at
+> the GW19 deadline. So the calendar below is two calendars: an
+> **early-season set that must be spent by GW19** (there are no first-half
+> blanks or doubles to wait for) and a **second-half set aimed at the
+> BGW30/33 and DGW31–36 window**.
+
+### First half — spend by GW19 (no BGW/DGW exists in this window)
+
 | Chip | Target window | Trigger condition | Status |
 |---|---|---|---|
 | **WC1** | — | — | **PLAYED** (pre-log, GW1/2) |
-| **WC2** | GW20–24 if released | Unlock unverified — the my-team payload exposes only one `wildcard` entry, already `played`. **Verify around GW19** whether a second-half wildcard exists this season. If it does: use it to rebuild for the BGW30/BGW33 window, not before | unknown |
-| **FH** | **GW33** (fallback GW30) | Standing rule: blank GW with <8 playable starters. GW33 is the higher-probability blank, so FH is held for it by default. If GW30's blank turns out larger than GW33's, swap | reserved |
-| **BB** | **GW34–36**, whichever is the confirmed double | Standing rule: ≥4 starters doubling AND bench E[pts] ≥ 12. **Currently blocked by squad structure** — Hughes and Palmer have 0 minutes, so bench E[pts] ≈ 4. BB is unusable until at least two bench slots become playing assets | reserved |
-| **TC** | The confirmed DGW with the best premium fixture pair; else any single GW meeting the bar | Standing rule: DGW premium, or single-GW E[pts] ≥ 8 (home vs bottom-6). Haaland is the default vehicle | reserved |
+| **TC1** | Best single Haaland (or B.Fernandes) fixture GW4–19 clearing E[pts] ≥ 8 | Standing rule: single-GW E[pts] ≥ 8 — home vs a bottom-6 defence. Candidates on the current grid: MCI v SUN (GW5), MCI v IPS (GW7). Re-rank each plan run; do not hold past GW17 | reserved |
+| **FH1** | Any GW where the FDR swing is extreme or ≥3 starters are unavailable; else a hard-fixture GW for the core (e.g. MCI/MUN both away to top sides) | No blank exists to save it for. Use it as a one-week fixture arbitrage or an injury bail-out. Do not let it expire | reserved |
+| **BB1** | GW15–19, only if the bench is repaired | Standing rule: bench E[pts] ≥ 12 (the DGW condition cannot be met in the first half). **Blocked now** — Hughes and A.Palmer have 0 minutes; bench E[pts] ≈ 4. Needs two bench slots turned into starters by ~GW14, or accept BB1 is forfeited | blocked |
+
+### Second half — GW20–38 (the blank/double window)
+
+| Chip | Target window | Trigger condition | Status |
+|---|---|---|---|
+| **WC2** | GW20–24, or held for the run-in | Now **confirmed to exist**. Use it to rebuild for the BGW30/BGW33 window; earliest sensible use is the GW20 unlock if the squad has decayed | available from GW20 |
+| **FH2** | **GW33** (fallback GW30) | Standing rule: blank GW with <8 playable starters. GW33 is the higher-probability blank, so FH2 is held for it by default. If GW30's blank turns out larger than GW33's, swap | reserved |
+| **BB2** | **GW34–36**, whichever is the confirmed double | Standing rule: ≥4 starters doubling AND bench E[pts] ≥ 12. Bench must be playing assets by then — same structural fix as BB1, with more time | reserved |
+| **TC2** | The confirmed DGW with the best premium fixture pair; else any single GW meeting the bar | Standing rule: DGW premium, or single-GW E[pts] ≥ 8. Haaland is the default vehicle | reserved |
 
 ### Sequencing logic
 
-1. **FH before BB.** FH solves a blank (GW33); BB needs a double (GW34–36) *and*
-   a fixed bench. Playing FH first does not cost BB anything.
-2. **BB is the constrained chip, not the scarce one.** Two of four bench slots
-   are non-playing. Fixing that with FTs is a multi-week project that must start
-   well before April — flag it in every plan run from ~GW25 onward.
-3. **TC has no deadline pressure.** If no double materialises, spend it on a
-   Haaland home fixture clearing E[pts] ≥ 8 rather than letting it expire.
-4. **Do not commit any chip on this calendar alone.** Every entry is derived
-   from cup dates, not from FPL's fixture data.
+1. **First-half chips are use-it-or-lose-it, and there is nothing to wait
+   for.** No blank or double exists before GW19, so TC1 and FH1 are pure
+   fixture plays. TC1 has a hard internal deadline of GW17 so a postponement
+   cannot strand it.
+2. **FH2 before BB2.** FH2 solves a blank (GW33); BB2 needs a double (GW34–36)
+   *and* a fixed bench. Playing FH2 first does not cost BB2 anything.
+3. **BB is the constrained chip in both halves.** Two of four bench slots are
+   non-playing. Fixing that with FTs is a multi-week project. Decide by ~GW12
+   whether BB1 is worth chasing (needs two bench upgrades by GW14) or is
+   written off so the FTs go to the XI instead. Flag it in every plan run.
+4. **Do not commit any second-half chip on this calendar alone.** Every
+   BGW/DGW number is derived from cup dates, not from FPL's fixture data.
 
 ### Revision triggers — firm up when any of these fire
 
@@ -97,8 +118,11 @@ numbers, so **no claimed DGW number below is sourced — all are derived.**
 - [ ] **PL announces rescheduled dates for GW30/GW33 postponements** → converts
       the provisional doubles into real ones. Historically announced in the week
       after the relevant cup round.
-- [ ] **~GW19: verify second-half chip release** via `get_my_current_team`
-      chips array. Determines whether WC2 exists at all.
+- [x] ~~**~GW19: verify second-half chip release**~~ — **done 2026-09-04.**
+      bootstrap-static `chips` lists two of each (events 2–19 / 20–38 for
+      WC and FH; 1–19 / 20–38 for BB and TC). WC2 exists.
+- [ ] **GW17 plan run: TC1 and FH1 must have a named GW by now** or be spent
+      that week. GW19 is the hard expiry.
 - [ ] Any FPL-confirmed change published on the PL site's blank/double gameweek
       tracker: [premierleague.com BGW/DGW news](https://www.premierleague.com/en/news/4611210/what-we-know-so-far-about-blank-and-double-gameweeks-this-season).
 

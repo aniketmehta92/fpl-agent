@@ -85,6 +85,14 @@
   #fdr-sort{cursor:pointer; text-decoration:underline}
   #fdr-sort:focus-visible, .pcard:focus-visible{outline:3px solid var(--fpl-cyan); outline-offset:2px}
 
+  /* Elite ownership */
+  #elite-table td.held{min-width:150px}
+  .bar{display:inline-block; height:10px; background:var(--fpl-purple); border-radius:3px; vertical-align:middle; margin-right:6px}
+  .own{color:#0a7a3f; font-weight:700}
+  .elite-meta{font-size:.8rem; color:var(--muted); margin:-6px 0 10px}
+  .elite-singles{font-size:.78rem; color:var(--muted); margin-top:8px}
+  tr.mine td:first-child{font-weight:700}
+
   .stamp{margin-top:26px; font-size:.78rem; color:var(--muted); text-align:center}
   @media (max-width:640px){ .facts{margin-left:0; flex-wrap:wrap; gap:14px} .facts .xi{padding-left:0; border-left:0} .pcard{width:104px} }
 </style>
@@ -144,6 +152,18 @@
     <div class="tablewrap"><table id="fdr-table"><thead></thead><tbody></tbody></table></div>
   </section>
 
+  <section id="elite-section">
+    <h2>Elite ownership — <span id="elite-n">—</span> public analysts' squads, <span id="elite-gw">—</span></h2>
+    <p class="elite-meta" id="elite-panel"></p>
+    <div class="tablewrap">
+    <table id="elite-table">
+      <thead><tr><th>Player</th><th>Club</th><th>Pos</th><th>£</th><th style="text-align:left">Held by</th><th>In my squad</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+    <p class="elite-singles" id="elite-singles"></p>
+  </section>
+
   <p class="stamp">Generated <span id="stamp">—</span> by fpl-analyst · read-only view of coverage/ state</p>
 </main>
 
@@ -169,6 +189,10 @@
  {"name":"Bench 3","club":"CLB","pos":"DEF","fixture":"OPP (H)","fdr":4,"xg3":0.00,"xa3":0.05,"price":4.0}]},
 "watchlist":[
  {"name":"Watch A","club":"CLB","pos":"MID","price":6.5,"xg4":0.0,"xa4":0.0,"xgi90":0.0,"start_pct":0,"fdr3":0.0,"e3":0.0,"delta":0.0}],
+"elite":{"gw":"GW+0","n":10,"panel":["Analyst A","Analyst B"],"players":[
+ {"name":"Player X","club":"CLB","pos":"MID","price":12.0,"held":10,"owned":true},
+ {"name":"Player Y","club":"CLB","pos":"DEF","price":5.0,"held":7,"owned":false}],
+ "singles":["Player Z"]},
 "fdr":{"gws":["GW+1","GW+2","GW+3","GW+4","GW+5","GW+6"],"teams":[
  {"name":"TEAM1","cells":[{"opp":"AAA","ha":"H","d":2},{"opp":"BBB","ha":"A","d":4},{"opp":"CCC","ha":"H","d":3},{"opp":"DDD","ha":"A","d":2},{"opp":"EEE","ha":"H","d":5},{"opp":"FFF","ha":"A","d":3}],"avg":3.2},
  {"name":"TEAM2","cells":[{"opp":"GGG","ha":"A","d":1},{"opp":"HHH","ha":"H","d":3},{"opp":"III","ha":"A","d":2},{"opp":"JJJ","ha":"H","d":2},{"opp":"KKK","ha":"A","d":4},{"opp":"LLL","ha":"H","d":2}],"avg":2.3}]}}
@@ -393,6 +417,29 @@
   }
   $('fdr-sort').addEventListener('click', sortFDR);
   $('fdr-sort').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sortFDR(); } });
+
+  // Elite ownership (section 4)
+  const E = D.elite;
+  if (E && E.players) {
+    $('elite-n').textContent = E.n;
+    $('elite-gw').textContent = E.gw + ' squads';
+    $('elite-panel').textContent = 'Panel: ' + (E.panel || []).join(' · ') + '. Count = how many of the ' + E.n + ' hold the player (all 15 picks, XI + bench). Last completed GW only.';
+    const eb = document.querySelector('#elite-table tbody');
+    E.players.slice().sort((a,b) => b.held - a.held || a.name.localeCompare(b.name)).forEach(p => {
+      const tr = document.createElement('tr');
+      if (p.owned) tr.className = 'mine';
+      const pct = Math.round(100 * p.held / E.n);
+      tr.innerHTML =
+        '<td>' + p.name + '</td><td>' + p.club + '</td><td>' + p.pos + '</td>' +
+        '<td class="num">£' + Number(p.price).toFixed(1) + '</td>' +
+        '<td class="held" style="text-align:left"><span class="bar" style="width:' + pct + 'px"></span><span class="num">' + p.held + '/' + E.n + '</span></td>' +
+        '<td>' + (p.owned ? '<span class="own">✓</span>' : '—') + '</td>';
+      eb.appendChild(tr);
+    });
+    if (E.singles && E.singles.length) $('elite-singles').textContent = 'Held by 1 of ' + E.n + ': ' + E.singles.join(' · ');
+  } else {
+    $('elite-section').hidden = true;
+  }
 })();
 </script>
 </body>

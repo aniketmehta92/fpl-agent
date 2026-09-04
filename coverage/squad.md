@@ -11,11 +11,14 @@ Bank: £0.5m | Free transfers: 1 | Team value: £99.9m (squad, at current prices
 > now £7.7m (sell £7.6m — first £0.1m of profit banked); Calafiori £5.7m (sell £5.6m);
 > Gvardiol £5.6m (sell still £5.5m). Everyone else unchanged. FPL reports team value
 > £100.2m incl. bank.
-Chips remaining: WC1 [PLAYED] WC2 [ — not yet released ] BB [available] TC [available] FH [available]
+Chips remaining — **first half (GW1–19):** WC1 [PLAYED] BB1 [available] TC1 [available] FH1 [available]
+· **second half (GW20–38):** WC2, BB2, TC2, FH2 all [locked until GW20]
 
-> ⚠️ Wildcard already spent (GW1/2 — before this log existed; 0 transfers recorded,
-> so it was almost certainly burned on the initial team build). Second wildcard
-> normally unlocks around the winter split; treat the squad as locked to FTs until then.
+> ✅ Verified 2026-09-04 from bootstrap-static `chips`: 2026/27 uses **two full
+> chip sets** — Wildcard, Free Hit, Bench Boost, Triple Captain each available once
+> in GW1/2–19 and again in GW20–38. First-half chips **expire unused at GW19**.
+> ⚠️ WC1 already spent (GW1/2 — before this log existed; 0 transfers recorded, so it
+> was almost certainly burned on the initial build). Squad is locked to FTs until GW20.
 
 ## The 15
 

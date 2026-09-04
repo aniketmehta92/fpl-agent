@@ -182,8 +182,15 @@ Data contract (all fields required) — **v2, 2026-09-03**:
   same-position starter (the promotion distance)
 - `fdr.gws`: next-6 GW labels; `fdr.teams[]` (all 20):
   `{name, cells:[{opp, ha, d}], avg}` with `d` = FPL's native 1–5 FDR
+- `elite` (section 4, from `coverage/elite-squads.md`): `{gw:"GW2", n:10,
+  panel:[analyst display names], players:[{name, club, pos, price, held,
+  owned}], singles:[names held by exactly 1]}` — `players` = everyone held
+  by ≥2 of the panel, `owned` = in Anik's current 15. Analyst names only;
+  never put team IDs in the page.
 
 What the template does with it (so the agent does not duplicate it):
+- Section 4 renders the elite table sorted by `held` with a bar, and bolds
+  rows Anik owns. If `elite` is absent the section hides itself.
 - Each player card shows a coloured FDR chip for this GW and the `xg3` /
   `xa3` projection under the fixture.
 - The header's top-right block shows the XI's average `fdr` and combined
