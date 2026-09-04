@@ -30,10 +30,11 @@ after Anik's GW3 moves — CL and Shaw are gone):**
 Semenyo (MID, E[3] ≈ 10.3) · **Wissa (FWD, ≈ 17.2)** · **Diop (DEF, ≈ 6.6)**.
 Konsa is technically the weakest DEF starter (E[3] ≈ 1.5 on 11 minutes) but he
 is not a viable starter, so Diop is the realistic replacement baseline. The
-table's Δ column is stale; the dashboard carries the re-based values:
-Gakpo +9.3 · Saka +9.5 · Cherki +8.6 · C.Palmer +8.6 · Dedić +5.2 ·
-N.Williams +2.6 · O'Reilly +0.8 · **Isak 0.0** (Wissa raised the FWD bar) ·
-R.James −4.4 · Havertz −10.8. Full rewrite at the GW4 plan run.
+table's Δ column is stale (and still 3-GW totals); **from 2026-09-04 Δ is quoted per
+gameweek** = (E[3] − baseline − 2.0) ÷ 3. Dashboard re-based per-GW values:
+Saka +3.2 · Gakpo +3.1 · Cherki +2.9 · C.Palmer +2.9 · Dedić +1.7 ·
+N.Williams +0.9 · O'Reilly +0.3 · **Isak 0.0** (Wissa raised the FWD bar) ·
+R.James −1.5 · Havertz −3.6. Full rewrite at the GW4 plan run.
 
 > **Baseline correction (2026-08-31).** Shaw's DEF baseline was initially
 > estimated at 7.7 using an assumed flat FDR 3. His real fixtures (EVE A/3,

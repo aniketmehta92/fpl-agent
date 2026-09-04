@@ -179,8 +179,9 @@ Data contract (all fields required) — **v2, 2026-09-03**:
   - `price` = current price (what FPL shows), not buy price.
 - `watchlist[]`: `{name, club, pos, price, xg4, xa4, xgi90, start_pct,
   fdr3, xg3, xa3, e3, delta}` where `xg3`/`xa3` are the same next-3
-  projection as the squad cards, and `delta` = E[Δpts next 3] − 2.0 vs.
-  weakest same-position starter (the promotion distance)
+  projection as the squad cards, and `delta` = **per gameweek**:
+  (E[pts next 3] − weakest same-position starter's E[pts next 3] − 2.0) ÷ 3.
+  One decimal. Positive clears the FT bar (changed to per-GW 2026-09-04).
 - `fdr.gws`: next-6 GW labels; `fdr.teams[]` (all 20):
   `{name, pos, p, gf, ga, cells:[{opp, ha, d}], avg}` with `d` = FPL's
   native 1–5 FDR and `pos`/`p`/`gf`/`ga` = league position, played, goals

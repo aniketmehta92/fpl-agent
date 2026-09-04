@@ -35,8 +35,8 @@ Chips remaining — **first half (GW1–19):** WC1 [PLAYED] BB1 [available] TC1 
 >
 > ⚠️ **Lineup as saved for GW3** (deadline passed 17:30 UTC): **Mbeumo is on the
 > bench**; Konsa (11 minutes all season, form 0.3) and Diop (IPS v LIV, FDR 4)
-> start in a 4-3-3; **João Pedro is captain**, B.Fernandes vice. If that was not
-> intended, it is locked for GW3 — fix at the GW4 deadline (Sat 12 Sep).
+> start in a 4-3-3; **João Pedro is captain**, B.Fernandes vice. Anik confirms Konsa
+> was bought deliberately as GW4 preparation (new Arsenal signing). Locked for GW3.
 
 ## The 15
 
@@ -46,7 +46,7 @@ Chips remaining — **first half (GW1–19):** WC1 [PLAYED] BB1 [available] TC1 
 | GK  | Palmer (Alex) | Ipswich (IPS) | 4.0 | 4.0 | 4.0 | **Non-playing** 4.0 bench filler. 0 min, 0 starts |
 | DEF | Gvardiol | Man City (MCI) | 5.5 | 5.5 | 5.6 | 14 pts, 1G 1A, form 7.0. 0/10 elite own him |
 | DEF | Calafiori | Arsenal (ARS) | 5.5 | 5.6 | 5.7 | 20 pts, 2A 2CS in 170 min, form 10.0. 43.7% owned. Risen £0.2 |
-| DEF | **Konsa** *(new)* | Arsenal (ARS) | 4.4 | 4.4 | 4.4 | **11 minutes all season**, form 0.3, 1 pt. Price falling (−0.1). Fourth-choice CB — not a starter. **Starting in GW3 per saved lineup** |
+| DEF | **Konsa** *(new)* | Arsenal (ARS) | 4.4 | 4.4 | 4.4 | **Anik's GW4 prep buy** — new Arsenal signing, 11 min so far (form 0.3). Minutes unproven: treat P(start) as unknown until the GW3 teamsheet. Price falling (−0.1). Starting in GW3 per saved lineup |
 | DEF | Diop | Ipswich (IPS) | 4.0 | 4.0 | 4.0 | Plays (180 min) but 6 GC, xGC 5.43. **Starting in GW3** v LIV (FDR 4) |
 | DEF | van Ewijk | Coventry (COV) | 4.0 | 4.0 | 4.0 | Bench. Plays (180 min), 3 pts |
 | MID | B.Fernandes | Man Utd (MUN) | 12.0 | 12.0 | 12.0 | **VC.** 25 pts, 3G 1A, form 12.5, xGI 2.84. 10/10 elite own, 9/10 captain |
