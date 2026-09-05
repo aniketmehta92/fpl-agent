@@ -94,6 +94,13 @@
   .elite-singles{font-size:.78rem; color:var(--muted); margin-top:8px}
   tr.mine td:first-child{font-weight:700}
 
+  /* Defence rotation table */
+  #def-table td.fdr{text-align:center; font-weight:600; font-size:.76rem; min-width:58px}
+  .mv{border:0; background:#efeaf1; color:var(--fpl-purple); border-radius:4px; width:22px; height:22px; cursor:pointer; font-size:.7rem; font-weight:800; margin:0 1px}
+  .mv:disabled{opacity:.3; cursor:default}
+  .mv:focus-visible{outline:3px solid var(--fpl-cyan)}
+  #def-table td.rk{text-align:center; font-weight:700; color:var(--muted)}
+
   .stamp{margin-top:26px; font-size:.78rem; color:var(--muted); text-align:center}
   @media (max-width:640px){ .facts{margin-left:0; flex-wrap:wrap; gap:14px} .facts .xi{padding-left:0; border-left:0} .pcard{width:104px} }
 </style>
@@ -136,7 +143,7 @@
   </section>
 
   <section>
-    <h2>Watchlist — transfer-in pipeline</h2>
+    <h2>Watchlist — attack (MID + FWD)</h2>
     <p class="elite-meta">Δ to promote / GW = (E[pts] next 3 − weakest same-position starter − 2.0 threshold) ÷ 3. Positive = the transfer clears the free-transfer bar. xG / xA next 3 = same projection as the squad cards.</p>
     <div class="tablewrap">
     <table id="watch-table">
@@ -144,6 +151,20 @@
         <th>Player</th><th>Club</th><th>Pos</th><th>£</th><th>xG (L4)</th><th>xA (L4)</th>
         <th>xGI/90</th><th>Start %</th><th>FDR next 3</th><th>xG next 3</th><th>xA next 3</th><th>E[pts] next 3</th><th>Δ to promote / GW</th>
       </tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Watchlist — defence (rotation pool)</h2>
+    <div class="sandbox-bar">
+      <span id="def-msg">Your defenders (bold, ✓) plus watchlist defenders. Use ▲ ▼ to rank them for rotation — the order is remembered in this browser only.</span>
+      <button type="button" id="def-reset">Reset order</button>
+    </div>
+    <div class="tablewrap">
+    <table id="def-table">
+      <thead></thead>
       <tbody></tbody>
     </table>
     </div>
@@ -190,8 +211,11 @@
  {"name":"Bench 1","club":"CLB","pos":"DEF","fixture":"OPP (H)","fdr":2,"xg3":0.05,"xa3":0.10,"price":4.0},
  {"name":"Bench 2","club":"CLB","pos":"MID","fixture":"OPP (A)","fdr":3,"xg3":0.30,"xa3":0.20,"price":4.5},
  {"name":"Bench 3","club":"CLB","pos":"DEF","fixture":"OPP (H)","fdr":4,"xg3":0.00,"xa3":0.05,"price":4.0}]},
-"watchlist":[
+"watchlist_att":[
  {"name":"Watch A","club":"CLB","pos":"MID","price":6.5,"xg4":0.0,"xa4":0.0,"xgi90":0.0,"start_pct":0,"fdr3":0.0,"xg3":0.0,"xa3":0.0,"e3":0.0,"delta":0.0}],
+"watchlist_def":[
+ {"name":"Defender A","club":"CLB","price":4.5,"owned":true,"fdr3":2.7,"xg3":0.1,"xa3":0.2,"e3":9.0,"delta":0.3,"next5":[{"gw":"GW+1","opp":"AAA","ha":"H","d":2},{"gw":"GW+2","opp":"BBB","ha":"A","d":3},{"gw":"GW+3","opp":"CCC","ha":"H","d":3},{"gw":"GW+4","opp":"DDD","ha":"A","d":4},{"gw":"GW+5","opp":"EEE","ha":"H","d":2}]},
+ {"name":"Watch D","club":"CLB","price":4.5,"owned":false,"fdr3":3.0,"xg3":0.1,"xa3":0.1,"e3":8.0,"delta":-0.1,"next5":[{"gw":"GW+1","opp":"FFF","ha":"A","d":3},{"gw":"GW+2","opp":"GGG","ha":"H","d":2},{"gw":"GW+3","opp":"HHH","ha":"A","d":4},{"gw":"GW+4","opp":"III","ha":"H","d":2},{"gw":"GW+5","opp":"JJJ","ha":"A","d":3}]}],
 "elite":{"gw":"GW+0","n":10,"panel":["Analyst A","Analyst B"],"players":[
  {"name":"Player X","club":"CLB","pos":"MID","price":12.0,"held":10,"xg3":2.5,"xa3":1.0,"owned":true},
  {"name":"Player Y","club":"CLB","pos":"DEF","price":5.0,"held":7,"xg3":0.2,"xa3":0.4,"owned":false}],
@@ -384,9 +408,9 @@
 
   renderSquad();
 
-  // Watchlist (sorted: closest to promotion first)
+  // Watchlist — attack (sorted: closest to promotion first)
   const wt = document.querySelector('#watch-table tbody');
-  D.watchlist.slice().sort((a,b) => b.delta - a.delta).forEach(w => {
+  (D.watchlist_att || D.watchlist || []).slice().sort((a,b) => b.delta - a.delta).forEach(w => {
     const tr = document.createElement('tr');
     tr.innerHTML =
       '<td>' + w.name + '</td><td>' + w.club + '</td><td>' + w.pos + '</td>' +
@@ -399,6 +423,55 @@
       '<td class="num">' + (w.delta >= 0 ? '+' : '') + w.delta.toFixed(1) + '</td>';
     wt.appendChild(tr);
   });
+
+  // Watchlist — defence rotation pool (reorderable; order kept in localStorage per viewer)
+  const DEF = (D.watchlist_def || []).slice();
+  const DEF_KEY = 'fpl-def-order-v1';
+  function loadOrder(){ try { return JSON.parse(localStorage.getItem(DEF_KEY) || 'null'); } catch(_) { return null; } }
+  function saveOrder(names){ try { localStorage.setItem(DEF_KEY, JSON.stringify(names)); } catch(_){} }
+  function defaultDefOrder(){ return DEF.slice().sort((a,b) => (b.owned - a.owned) || (b.delta - a.delta)).map(d => d.name); }
+  let defOrder = (function(){
+    const saved = loadOrder();
+    const names = DEF.map(d => d.name);
+    if (!saved || !Array.isArray(saved)) return defaultDefOrder();
+    const kept = saved.filter(n => names.includes(n));
+    names.forEach(n => { if (!kept.includes(n)) kept.push(n); });
+    return kept;
+  })();
+  const gws5 = DEF.length && DEF[0].next5 ? DEF[0].next5.map(f => f.gw) : [];
+  document.querySelector('#def-table thead').innerHTML =
+    '<tr><th>#</th><th>Player</th><th>Club</th><th>£</th><th>FDR next 3</th><th>xG next 3</th><th>xA next 3</th><th>E[pts] next 3</th><th>Δ / GW</th>' +
+    gws5.map(g => '<th style="text-align:center">' + g + '</th>').join('') + '<th>Move</th></tr>';
+  function renderDef(){
+    const tb = document.querySelector('#def-table tbody');
+    tb.innerHTML = '';
+    defOrder.forEach((name, i) => {
+      const d = DEF.find(x => x.name === name); if (!d) return;
+      const tr = document.createElement('tr');
+      if (d.owned) tr.className = 'mine';
+      tr.innerHTML =
+        '<td class="rk">' + (i + 1) + '</td>' +
+        '<td>' + d.name + (d.owned ? ' <span class="own">✓</span>' : '') + '</td><td>' + d.club + '</td>' +
+        '<td class="num">£' + Number(d.price).toFixed(1) + '</td>' +
+        '<td class="num">' + Number(d.fdr3).toFixed(1) + '</td>' +
+        '<td class="num">' + Number(d.xg3).toFixed(2) + '</td><td class="num">' + Number(d.xa3).toFixed(2) + '</td>' +
+        '<td class="num">' + Number(d.e3).toFixed(1) + '</td>' +
+        '<td class="num">' + (d.delta >= 0 ? '+' : '') + Number(d.delta).toFixed(1) + '</td>' +
+        (d.next5 || []).map(f => '<td class="fdr d' + f.d + '">' + f.opp + ' (' + f.ha + ')</td>').join('') +
+        '<td><button type="button" class="mv" data-dir="-1" data-i="' + i + '" aria-label="move up"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+        '<button type="button" class="mv" data-dir="1" data-i="' + i + '" aria-label="move down"' + (i === defOrder.length - 1 ? ' disabled' : '') + '>▼</button></td>';
+      tb.appendChild(tr);
+    });
+  }
+  document.querySelector('#def-table').addEventListener('click', e => {
+    const b = e.target.closest('.mv'); if (!b) return;
+    const i = Number(b.dataset.i), j = i + Number(b.dataset.dir);
+    if (j < 0 || j >= defOrder.length) return;
+    [defOrder[i], defOrder[j]] = [defOrder[j], defOrder[i]];
+    saveOrder(defOrder); renderDef();
+  });
+  $('def-reset').addEventListener('click', () => { defOrder = defaultDefOrder(); try { localStorage.removeItem(DEF_KEY); } catch(_){} renderDef(); });
+  renderDef();
 
   // FDR grid
   const fh = document.querySelector('#fdr-table thead');

@@ -16,6 +16,11 @@
     {"name": "N.Williams", "team": "NFO"}, {"name": "O'Reilly", "team": "MCI"}, {"name": "James", "team": "CHE"},
     {"name": "Dedić", "team": "NEW"}
   ],
+  "def_pool_comment": "Extra cheap defenders for the rotation table only — not part of the 10-name transfer watchlist.",
+  "def_pool": [
+    {"name": "De Cuyper", "team": "BHA"}, {"name": "Ajer", "team": "BRE"}, {"name": "Hall", "team": "NEW"},
+    {"name": "Davis", "team": "IPS"}, {"name": "Thomas", "team": "COV"}
+  ],
   "elite": [
     {"label": "BigManBakar", "id": 5133}, {"label": "Ben Crellin", "id": 53517}, {"label": "Zophar", "id": 2177},
     {"label": "Lateriser", "id": 6816}, {"label": "FPL Salah", "id": 70}, {"label": "FPL General", "id": 176749},

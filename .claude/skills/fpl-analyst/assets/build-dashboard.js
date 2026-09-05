@@ -120,16 +120,25 @@ function get(url) {
     const starters = xi.filter(c => c.pos === pos && c.pstart >= 0.5);
     baseline[pos] = starters.length ? Math.min(...starters.map(c => c.e3)) : 0;
   });
-  const watchlist = input.watchlist.map(w => {
+  const watchRows = input.watchlist.map(w => {
     const p = resolve(w), pr = project(p);
     return {
       name: p.web_name, club: w.team, pos: pr.pos, price: p.now_cost / 10,
       xg4: Number(p.expected_goals), xa4: Number(p.expected_assists), xgi90: Number(p.expected_goal_involvements_per_90),
       start_pct: Math.round(100 * p.starts / Math.max(tbl[p.team].p, 1)),
       fdr3: r1(pr.fdr3), xg3: r2(pr.xg3), xa3: r2(pr.xa3), e3: r1(pr.e3),
-      delta: r1((pr.e3 - baseline[pr.pos] - 2.0) / 3),
+      delta: r1((pr.e3 - baseline[pr.pos] - 2.0) / 3), _id: p.id,
     };
   });
+  const watchlist_att = watchRows.filter(w => w.pos === 'MID' || w.pos === 'FWD').map(({ _id, ...w }) => w);
+  // Defence rotation pool: every owned DEF (XI + bench) plus watchlist DEFs, with the next-5 fixture strip
+  const next5 = tid => [0, 1, 2, 3, 4].map(i => { const f = fxByTeam[tid][GW + i] || []; return { gw: 'GW' + (GW + i), opp: f.length ? f[0].opp : '—', ha: f.length ? f[0].ha : '', d: f.length ? f[0].d : 3 }; });
+  const ownedDefIds = [...input.squad.xi, ...input.squad.bench].filter(id => POS[players[id].element_type] === 'DEF');
+  const watchlist_def = [
+    ...ownedDefIds.map(id => { const p = players[id], pr = project(p); return { name: p.web_name, club: teams[p.team].short_name, price: p.now_cost / 10, owned: true, fdr3: r1(pr.fdr3), xg3: r2(pr.xg3), xa3: r2(pr.xa3), e3: r1(pr.e3), delta: r1((pr.e3 - baseline.DEF - 2.0) / 3), next5: next5(p.team) }; }),
+    ...watchRows.filter(w => w.pos === 'DEF').map(w => { const p = players[w._id]; return { name: w.name, club: w.club, price: w.price, owned: false, fdr3: w.fdr3, xg3: w.xg3, xa3: w.xa3, e3: w.e3, delta: w.delta, next5: next5(p.team) }; }),
+    ...(input.def_pool || []).map(w => { const p = resolve(w), pr = project(p); return { name: p.web_name, club: w.team, price: p.now_cost / 10, owned: false, fdr3: r1(pr.fdr3), xg3: r2(pr.xg3), xa3: r2(pr.xa3), e3: r1(pr.e3), delta: r1((pr.e3 - baseline.DEF - 2.0) / 3), next5: next5(p.team) }; }),
+  ];
 
   // --- elite squads (last GW whose deadline has passed) ---
   const eliteGw = lastDone || GW;
@@ -168,7 +177,7 @@ function get(url) {
     deadline_local: fmtPT(dl, { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + ' PT',
     bank: input.bank, fts: input.fts, chips: input.chips_note.split(' · '),
     squad: { xi: xi.map(({ pstart, e3, ...c }) => c), bench: bench.map(({ pstart, e3, cap, vice, ...c }) => c) },
-    watchlist, elite: { gw: 'GW' + eliteGw, n: panel.length, panel, players: elitePlayers, singles },
+    watchlist_att, watchlist_def, elite: { gw: 'GW' + eliteGw, n: panel.length, panel, players: elitePlayers, singles },
     fdr: { gws, teams: fdrTeams },
     baselines: baseline,
   };
@@ -188,7 +197,8 @@ function get(url) {
   console.log(`OK GW${GW} view (deadline ${data.deadline_local}); elite from GW${eliteGw} (${panel.length} squads); ${html.length} bytes`);
   console.log('XI:', xi.map(c => c.name + (c.cap ? '(C)' : c.vice ? '(V)' : '') + ' ' + c.fixture + ' e3=' + c.e3).join(' | '));
   console.log('baselines:', JSON.stringify(baseline));
-  console.log('watch:', watchlist.map(w => w.name + ' e3=' + w.e3 + ' Δ/GW=' + w.delta).join(' | '));
+  console.log('attack:', watchlist_att.map(w => w.name + ' e3=' + w.e3 + ' Δ/GW=' + w.delta).join(' | '));
+  console.log('defence:', watchlist_def.map(w => w.name + (w.owned ? '*' : '') + ' e3=' + w.e3 + ' Δ/GW=' + w.delta + ' [' + w.next5.map(f => f.d).join('') + ']').join(' | '));
   console.log('elite top:', elitePlayers.sort((a, b) => b.held - a.held).slice(0, 12).map(p => p.name + ' ' + p.held).join(' | '));
   const wissa = elitePlayers.find(p => p.name === 'Wissa'); console.log('Wissa held by', wissa ? wissa.held : (singles.includes('Wissa') ? 1 : 0));
 })().catch(e => { console.error(e); process.exit(1); });

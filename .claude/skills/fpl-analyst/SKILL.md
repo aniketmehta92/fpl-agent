@@ -185,11 +185,19 @@ Data contract (all fields required) — **v2, 2026-09-03**:
     (1 + 0.15 × (3 − FDR_i))` — the same fixture multiplier the projection
     model uses. 0.00 for players with no minutes. Two decimals.
   - `price` = current price (what FPL shows), not buy price.
-- `watchlist[]`: `{name, club, pos, price, xg4, xa4, xgi90, start_pct,
-  fdr3, xg3, xa3, e3, delta}` where `xg3`/`xa3` are the same next-3
-  projection as the squad cards, and `delta` = **per gameweek**:
+- `watchlist_att[]` (MID + FWD only): `{name, club, pos, price, xg4, xa4,
+  xgi90, start_pct, fdr3, xg3, xa3, e3, delta}` where `xg3`/`xa3` are the
+  same next-3 projection as the squad cards, and `delta` = **per gameweek**:
   (E[pts next 3] − weakest same-position starter's E[pts next 3] − 2.0) ÷ 3.
   One decimal. Positive clears the FT bar (changed to per-GW 2026-09-04).
+- `watchlist_def[]` (defence rotation pool, 2026-09-04): every owned DEF
+  (`owned:true`) plus every watchlist DEF plus the `def_pool` names in
+  `dashboard-input.json` (cheap rotation candidates that do NOT count against
+  the 10-name watchlist cap): `{name, club, price, owned, fdr3,
+  xg3, xa3, e3, delta, next5:[{gw, opp, ha, d}]}` — five upcoming fixtures
+  from the view GW. The page lets the viewer rank rows with up/down buttons
+  (order kept in that browser's localStorage only, never written back).
+  Purpose: pick cheap defenders to alternate on fixtures (principle #4).
 - `fdr.gws`: next-6 GW labels; `fdr.teams[]` (all 20):
   `{name, pos, p, gf, ga, cells:[{opp, ha, d}], avg}` with `d` = FPL's
   native 1–5 FDR and `pos`/`p`/`gf`/`ga` = league position, played, goals
@@ -205,6 +213,8 @@ Data contract (all fields required) — **v2, 2026-09-03**:
 What the template does with it (so the agent does not duplicate it):
 - Section 4 renders the elite table sorted by `held` with a bar, and bolds
   rows Anik owns. If `elite` is absent the section hides itself.
+- The defence table defaults to owned first, then by `delta`; reorder
+  buttons and a reset are client-side only.
 - Each player card shows a coloured FDR chip for this GW and the `xg3` /
   `xa3` projection under the fixture.
 - The header's top-right block shows the XI's average `fdr` and combined
