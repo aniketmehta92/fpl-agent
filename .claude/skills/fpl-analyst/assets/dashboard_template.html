@@ -118,8 +118,8 @@
   <section id="squad-section">
     <h2>Squad</h2>
     <div class="sandbox-bar">
-      <span class="sandbox-tag" id="sandbox-tag">SANDBOX ONLY — NOT SAVED</span>
-      <span id="sandbox-msg">Drag (or tap) a player onto another to swap XI ↔ bench. Header XI stats update live.</span>
+      <span class="sandbox-tag" id="sandbox-tag">LIVE SQUAD · what-ifs not saved</span>
+      <span id="sandbox-msg">This is the real saved squad. Drag (or tap) a player onto another to try a swap — the header recalculates, nothing is saved, Reset restores it.</span>
       <button type="button" id="sandbox-reset" disabled>Reset to saved XI</button>
     </div>
     <div class="pitch" id="pitch">
@@ -132,7 +132,7 @@
       <div class="bench-label">Bench (in order)</div>
       <div class="row" id="row-BENCH"></div>
     </div>
-    <p class="sandbox-help">FDR chip = this GW's fixture difficulty (FPL 1–5). xG / xA = projected over the next 3 fixtures (season rate × fixture multiplier). Nothing you do here changes the real team or coverage/ state.</p>
+    <p class="sandbox-help">FDR chip = this GW's fixture difficulty (FPL 1–5). xG / xA = projected over the next 3 fixtures (season rate × fixture multiplier). Squad = the real saved team for the gameweek shown. Nothing you do here changes it.</p>
   </section>
 
   <section>
@@ -285,7 +285,7 @@
     const dirty = JSON.stringify(state) !== JSON.stringify(saved);
     $('sandbox-reset').disabled = !dirty;
     const tag = $('sandbox-tag');
-    tag.textContent = dirty ? 'SANDBOX — UNSAVED WHAT-IF' : 'SANDBOX ONLY — NOT SAVED';
+    tag.textContent = dirty ? 'WHAT-IF — not saved' : 'LIVE SQUAD · what-ifs not saved';
     tag.classList.toggle('dirty', dirty);
     const capOnBench = state.bench.some(p => p.cap);
     if (capOnBench) setMsg('Captain is on the bench in this what-if — the real armband would move to the vice.', true);

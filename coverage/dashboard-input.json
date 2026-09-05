@@ -1,0 +1,25 @@
+{
+  "_comment": "Squad picks come from get_my_current_team (authenticated MCP) — element ids in lineup order, bench last. Everything else is computed live by build-dashboard.js from the public FPL API.",
+  "updated": "2026-09-04",
+  "bank": 0.5,
+  "fts": 1,
+  "chips_note": "BB1 · TC1 · FH1 (WC1 played) · +WC2 BB2 TC2 FH2 from GW20",
+  "squad": {
+    "xi":    [496, 391, 8, 31, 259, 426, 397, 124, 411, 165, 464],
+    "bench": [301, 427, 175, 212],
+    "captain": 165,
+    "vice": 426
+  },
+  "watchlist": [
+    {"name": "Gakpo", "team": "LIV"}, {"name": "Saka", "team": "ARS"}, {"name": "Cherki", "team": "MCI"},
+    {"name": "Palmer", "team": "CHE"}, {"name": "Isak", "team": "LIV"}, {"name": "Havertz", "team": "ARS"},
+    {"name": "N.Williams", "team": "NFO"}, {"name": "O'Reilly", "team": "MCI"}, {"name": "James", "team": "CHE"},
+    {"name": "Dedić", "team": "NEW"}
+  ],
+  "elite": [
+    {"label": "BigManBakar", "id": 5133}, {"label": "Ben Crellin", "id": 53517}, {"label": "Zophar", "id": 2177},
+    {"label": "Lateriser", "id": 6816}, {"label": "FPL Salah", "id": 70}, {"label": "FPL General", "id": 176749},
+    {"label": "FPL Focal", "id": 298}, {"label": "FPL Harry", "id": 3054}, {"label": "Sertalp Çay", "id": 3333334},
+    {"label": "FPL Raptor", "id": 199}
+  ]
+}

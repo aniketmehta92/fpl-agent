@@ -86,6 +86,35 @@ follow for GW3 is only visible after Friday's deadline.
 - **Haaland is a 50/50 among the elite,** not a lock. The Haaland-less half
   run Isak + a stronger midfield/defence.
 
+
+## GW3 snapshot (picks visible after the 4 Sep deadline) — a chip week
+
+| Analyst | GW3 chip | Notable |
+|---|---|---|
+| BigManBakar | **Wildcard** | Wissa, Konsa, Hall, De Cuyper, Saka, Palmer in |
+| Ben Crellin | **Free Hit** | one-week team — reverts for GW4 |
+| Zophar | **Wildcard** | Wissa, Konsa, Cherki, Hall, De Cuyper in |
+| Lateriser | **Triple Captain** (Haaland) | 2 transfers: Cherki in |
+| FPL Salah | **Wildcard** | Wissa, Konsa, Cherki, Hall, De Cuyper in |
+| FPL General | **Free Hit** | reverts for GW4 |
+| FPL Focal | **Wildcard** | Wissa, Konsa, De Cuyper, Saka, Foden in |
+| FPL Harry | **Triple Captain** (Haaland) | no transfers |
+| Sertalp Çay | **Free Hit** | Gakpo, Wissa, Isak, Saka |
+| FPL Raptor | **Triple Captain** (Haaland) | no transfers |
+
+Seven of ten burned a first-half chip in GW3 (4 WC, 3 FH, 3 TC) — consistent
+with the two-set chip rule making early chips cheap. **Haaland captained by
+10/10.** Tally (GW3, 15 picks each): Haaland 10 · Szoboszlai 9 · De Cuyper 7 ·
+João Pedro 7 · Calafiori 5 · Saka 5 · Ajer 5 · Groß 5 · **Wissa 5** ·
+**Konsa 4** · Verbruggen 4 · Foden 4. B.Fernandes fell from 10/10 to 4/10 —
+every wildcarder dropped him (MUN v MCI in GW4, then FUL A).
+
+**Anik check:** Wissa 5/10 (all four wildcarders + Sertalp's FH) and Konsa
+4/10 (all four wildcarders). Both of Anik's GW3 buys match the wildcard
+consensus exactly. Caveat: the three Free Hit squads revert in GW4, so the
+GW4 tally will drop Wissa/De Cuyper counts by up to 3 unless those managers
+buy them back.
+
 ## Refresh procedure
 
 For the last completed GW: `get_team(team_id, gameweek)` for each ID above,
